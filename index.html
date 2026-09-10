@@ -545,6 +545,234 @@ img,svg,input,button,textarea,select{max-width:100%}
 
 </style>
 
+
+<style id="revision-41-final">
+/* ===== KitaWorks v41: responsive, fixed navbar, unified custom controls ===== */
+html,body{width:100%;max-width:100%;overflow-x:hidden}
+body{padding-top:0}
+.topbar{
+  position:fixed!important;left:0;right:0;top:0!important;width:100%;z-index:100!important;
+  box-shadow:0 1px 0 #111,0 7px 24px rgba(91,20,28,.12)
+}
+.sidebar{top:62px!important;left:-290px!important;z-index:95!important}
+.sidebar.open{left:0!important}
+.overlay{display:block!important;inset:62px 0 0 0!important;z-index:90!important}
+.overlay.hidden{display:none!important}
+main{
+  margin:0 auto!important;width:min(100%,1600px)!important;max-width:1600px!important;
+  padding:clamp(14px,2vw,30px)!important;
+}
+#app main{padding-top:calc(62px + clamp(14px,2vw,30px))!important}
+@media(min-width:960px){
+  .sidebar{left:-290px!important}
+  .sidebar.open{left:0!important}
+  .overlay{display:block!important}
+  .overlay.hidden{display:none!important}
+  main{margin:0 auto!important}
+}
+.hamb{
+  display:grid!important;place-items:center;cursor:pointer;
+  border:1px solid rgba(255,255,255,.16)!important;background:rgba(255,255,255,.08)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.14)
+}
+
+/* Desktop should use the screen instead of looking zoomed-out */
+@media(min-width:1100px){
+  body{font-size:15px}
+  .grid-2{grid-template-columns:minmax(0,1.45fr) minmax(360px,1fr);gap:22px}
+  .card{padding:22px}
+  .page-title h2{font-size:24px}
+  .hero-btn{padding:24px 26px}
+  .hero-btn strong{font-size:25px}
+}
+
+/* Unified glass button/dropdown fields */
+.choice-btn,.time-display,.date-display,.kw-select{
+  appearance:none;-webkit-appearance:none;
+  min-width:0!important;width:100%;height:42px;padding:9px 11px!important;
+  border:1px solid rgba(111,47,55,.15)!important;border-radius:12px!important;
+  background:rgba(255,255,255,.72)!important;color:#27292d!important;
+  box-shadow:0 5px 15px rgba(24,27,32,.06),inset 0 1px rgba(255,255,255,.8)!important;
+  white-space:nowrap;overflow:hidden;
+}
+.choice-btn span,.time-display span,.kw-select span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.choice-option{min-height:44px}
+.modal{width:min(440px,calc(100vw - 24px))!important;max-height:92svh;overflow:auto}
+.date-modal{width:min(430px,calc(100vw - 24px))!important}
+.datepicker-grid{min-width:0!important}
+.datepicker-grid>*{min-width:0!important}
+.wheel-picker{width:100%;max-width:100%}
+
+/* Attendance: one compact card/student. NIS and Horenso are intentionally absent. */
+#page-attendance .attendance-table thead{display:none!important}
+#attendanceBody{display:grid!important;gap:12px;width:100%}
+#attendanceBody tr[data-sid]{
+  display:grid!important;width:100%;min-width:0!important;
+  grid-template-columns:26px minmax(0,1fr);
+  grid-template-areas:
+    "num name"
+    "fields fields"
+    "note note"!important;
+  gap:10px 9px!important;margin:0!important;padding:13px 14px!important;
+  border:1px solid rgba(255,255,255,.9)!important;border-radius:17px!important;
+  background:rgba(255,255,255,.69)!important;
+  box-shadow:0 7px 22px rgba(31,41,55,.065)!important;
+  backdrop-filter:blur(13px);-webkit-backdrop-filter:blur(13px)
+}
+#attendanceBody td{border:0!important;padding:0!important;min-width:0!important}
+#attendanceBody .att-no{
+  grid-area:num!important;width:23px!important;height:23px!important;border-radius:50%!important;
+  display:grid!important;place-items:center!important;align-self:center;
+  background:#fae7ec!important;color:#a24855!important;font-size:10px!important
+}
+#attendanceBody .att-name{
+  grid-area:name!important;display:flex!important;align-items:center!important;gap:7px!important;
+  font-size:15px!important;line-height:1.25;min-width:0
+}
+#attendanceBody .att-name strong{white-space:normal!important;overflow:visible!important;text-overflow:clip!important}
+.att-fields{
+  grid-area:fields;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.22fr) minmax(0,1.12fr);
+  gap:8px;min-width:0
+}
+.att-field{min-width:0}
+.att-field-label{display:block;margin:0 0 4px 2px;font-size:9px;color:#858990;line-height:1}
+#attendanceBody .att-note{grid-area:note!important}
+#attendanceBody .att-note::before{content:"Catatan";display:block;font-size:9px;color:#858990;margin:0 0 4px 2px}
+#attendanceBody .note-input{width:100%!important;min-width:0!important;height:39px;padding:9px 10px;font-size:12px}
+#attendanceBody .choice-btn,#attendanceBody .time-display{font-size:11.5px!important;padding:8px 8px!important;height:39px}
+.gender-mark{font-size:16px;line-height:1;font-weight:500}
+.gender-mark.male{color:#3b82c4}.gender-mark.female{color:#df7599}
+@media(max-width:420px){
+  #attendanceBody tr[data-sid]{padding:11px!important;gap:9px 7px!important}
+  .att-fields{gap:5px}
+  #attendanceBody .choice-btn,#attendanceBody .time-display{font-size:10.5px!important;padding:7px 6px!important;height:38px}
+  #attendanceBody .att-name{font-size:14px!important}
+}
+
+/* Data table: fit mobile viewport, wrap text, distinct header */
+.student-table{width:100%!important;table-layout:fixed!important;min-width:0!important}
+.student-table th,.student-table td{
+  white-space:normal!important;overflow-wrap:anywhere!important;word-break:normal!important;
+  padding:9px 7px!important
+}
+.student-table thead th{
+  background:rgba(182,45,55,.12)!important;color:#74232c!important;
+  border-bottom:1px solid rgba(182,45,55,.22)!important
+}
+.student-table tbody td{background:rgba(255,255,255,.28)}
+.student-table th:nth-child(1),.student-table td:nth-child(1){width:13%}
+.student-table th:nth-child(2),.student-table td:nth-child(2){width:24%}
+.student-table th:nth-child(3),.student-table td:nth-child(3){width:12%}
+.student-table th:nth-child(4),.student-table td:nth-child(4){width:16%}
+.student-table th:nth-child(5),.student-table td:nth-child(5){width:13%}
+.student-table th:nth-child(6),.student-table td:nth-child(6){width:8%}
+.student-table th:nth-child(7),.student-table td:nth-child(7){width:14%}
+.student-actions{display:flex;flex-wrap:wrap;gap:4px}
+.student-actions .btn{padding:6px 7px!important;font-size:10px!important}
+@media(max-width:650px){
+  .student-table th,.student-table td{font-size:9.4px!important;padding:7px 4px!important}
+  .student-table th:nth-child(1),.student-table td:nth-child(1){width:12%}
+  .student-table th:nth-child(2),.student-table td:nth-child(2){width:25%}
+  .student-table th:nth-child(3),.student-table td:nth-child(3){width:11%}
+  .student-table th:nth-child(4),.student-table td:nth-child(4){width:15%}
+  .student-table th:nth-child(5),.student-table td:nth-child(5){width:13%}
+  .student-table th:nth-child(6),.student-table td:nth-child(6){width:7%}
+  .student-table th:nth-child(7),.student-table td:nth-child(7){width:17%}
+  .student-actions .btn{width:100%;font-size:8.7px!important;padding:5px 3px!important}
+}
+
+/* Monthly agenda calendar */
+.calendar-head{gap:10px}
+.calendar-head .cal-nav{
+  width:40px;height:40px;padding:0!important;border-radius:12px!important;
+  display:grid;place-items:center;font-size:25px!important;line-height:1;
+  background:rgba(255,255,255,.82)!important;border:1px solid rgba(182,45,55,.16)!important;
+  color:var(--maroon-dark)!important;box-shadow:0 5px 15px rgba(31,41,55,.07)!important
+}
+.calendar-grid{
+  display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;
+  gap:6px!important;width:100%!important;min-width:0!important
+}
+.calendar-grid .dow{
+  min-width:0;font-size:11px;padding:7px 2px;border-radius:9px;
+  background:rgba(182,45,55,.07);color:#7c3b43
+}
+.calendar-grid .day{
+  min-width:0!important;min-height:104px!important;height:auto;
+  border-radius:11px!important;padding:7px!important;overflow:hidden;
+  background:rgba(255,255,255,.60)!important
+}
+.calendar-grid .day-num{font-size:12px}
+.calendar-grid .mini{font-size:9px!important;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:700px){
+  #page-calendar .card{padding:8px!important}
+  .calendar-head{margin-bottom:8px}
+  .calendar-head h3{font-size:14px!important}
+  .calendar-head .cal-nav{width:34px;height:34px;font-size:21px!important}
+  .calendar-grid{gap:2px!important}
+  .calendar-grid .dow{font-size:8px!important;padding:5px 0}
+  .calendar-grid .day{min-height:69px!important;padding:3px!important;border-radius:6px!important}
+  .calendar-grid .day-num{font-size:9px!important}
+  .calendar-grid .mini{font-size:6.7px!important;padding:2px 1px!important;margin-top:2px!important;border-radius:3px!important}
+}
+@media(max-width:380px){
+  .calendar-grid .day{min-height:62px!important}
+  .calendar-grid .mini{font-size:6.2px!important}
+}
+
+/* Timeline day detail */
+.day-timeline{display:grid;gap:7px;margin-top:14px}
+.timeline-row{display:grid;grid-template-columns:92px 1fr;gap:10px;padding:10px 0;border-top:1px solid rgba(120,124,131,.12)}
+.timeline-time{font-variant-numeric:tabular-nums;color:#7b3b43;font-size:12px}
+.timeline-title{font-size:13px}
+.timeline-note{font-size:11px;color:var(--muted);margin-top:3px}
+
+/* Student history summary */
+.student-detail-head{padding-bottom:10px;border-bottom:1px solid rgba(120,124,131,.13)}
+.student-detail-head h3{margin:0 0 5px;font-size:20px}
+.student-summary-list{display:grid;gap:0;margin:10px 0 18px}
+.student-summary-row{display:flex;justify-content:space-between;gap:12px;padding:8px 1px;border-bottom:1px solid rgba(120,124,131,.10);font-size:13px}
+.student-summary-row span:last-child{text-align:right;font-weight:500}
+.history-timeline{display:grid;gap:8px;margin-top:9px}
+.history-entry{padding:10px 11px;border:1px solid rgba(120,124,131,.12);border-radius:12px;background:rgba(255,255,255,.46)}
+.history-entry .date{font-size:10px;color:var(--muted);margin-bottom:4px}
+.history-entry .kind{display:inline-block;font-size:9px;border-radius:999px;padding:3px 6px;background:rgba(182,45,55,.09);color:#8c2b35;margin-bottom:5px}
+
+/* Login sakura: visible and moving on desktop too */
+.sakura-layer{z-index:1!important;display:block!important}
+.sakura{
+  display:block!important;width:17px!important;height:12px!important;opacity:.72!important;
+  animation-name:sakuraFallV41!important;animation-timing-function:linear!important;animation-iteration-count:infinite!important
+}
+@keyframes sakuraFallV41{
+  0%{transform:translate3d(-8px,-12vh,0) rotate(0deg)}
+  35%{transform:translate3d(34px,34vh,0) rotate(130deg)}
+  68%{transform:translate3d(8px,70vh,0) rotate(250deg)}
+  100%{transform:translate3d(58px,112vh,0) rotate(420deg)}
+}
+/* override previous reduced-motion rule only for ordinary environments; users requesting reduced motion remain respected */
+@media(prefers-reduced-motion:no-preference){.sakura{display:block!important;animation-play-state:running!important}}
+</style>
+
+
+<style id="revision-41-table-fit">
+.monthly-table-wrap{width:100%;max-width:100%;overflow-x:hidden!important}
+.monthly-table-wrap table{width:100%!important;min-width:0!important;table-layout:fixed!important}
+.monthly-table-wrap th,.monthly-table-wrap td{white-space:normal!important;overflow-wrap:anywhere!important;text-align:center;padding:7px 4px!important}
+.monthly-table-wrap th{background:rgba(182,45,55,.12)!important;color:#74232c!important}
+.monthly-table-wrap th:nth-child(1),.monthly-table-wrap td:nth-child(1){width:4%}
+.monthly-table-wrap th:nth-child(2),.monthly-table-wrap td:nth-child(2){width:9%}
+.monthly-table-wrap th:nth-child(3),.monthly-table-wrap td:nth-child(3){width:19%;text-align:left}
+.monthly-table-wrap th:nth-child(n+4),.monthly-table-wrap td:nth-child(n+4){width:8.5%}
+@media(max-width:650px){
+ .monthly-table-wrap th,.monthly-table-wrap td{font-size:7.2px!important;padding:5px 1px!important;line-height:1.15}
+ .monthly-table-wrap th:nth-child(1),.monthly-table-wrap td:nth-child(1){width:4%}
+ .monthly-table-wrap th:nth-child(2),.monthly-table-wrap td:nth-child(2){width:9%}
+ .monthly-table-wrap th:nth-child(3),.monthly-table-wrap td:nth-child(3){width:20%}
+ .monthly-table-wrap th:nth-child(n+4),.monthly-table-wrap td:nth-child(n+4){width:8.35%}
+}
+</style>
+
 </head>
 <body>
 
@@ -595,7 +823,7 @@ img,svg,input,button,textarea,select{max-width:100%}
     <nav class="side-nav">
       <button class="nav-item active" data-page="home" onclick="go('home',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3.5 10.5 12 3.8l8.5 6.7v9.2H6.8v-7.2h10.4v7.2"/></svg></span>Beranda</button>
       <button class="nav-item" data-page="calendar" onclick="go('calendar',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="15" rx="2"/><path d="M7.5 3.5v4M16.5 3.5v4M3.5 9.5h17M8 13h.01M12 13h.01M16 13h.01"/></svg></span>Kalender Sensei</button>
-      <button class="nav-item" data-page="attendance" onclick="go('attendance',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 4h6l1 2h3v14H5V6h3l1-2Z"/><path d="m8.5 13 2.2 2.2 4.8-5"/></svg></span>Daftar Hadir</button>
+      <button class="nav-item" data-page="attendance" onclick="go('attendance',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 4h6l1 2h3v14H5V6h3l1-2Z"/><path d="m8.5 13 2.2 2.2 4.8-5"/></svg></span>Input Daftar Hadir</button>
       <button class="nav-item" data-page="students" onclick="go('students',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c.5-4 2.5-6 5.5-6s5 2 5.5 6"/><circle cx="17" cy="9" r="2.2"/><path d="M15.5 14.2c2.9-.5 4.7 1 5 4.1"/></svg></span>Data Siswa</button>
       <button class="nav-item" data-page="sp" onclick="go('sp',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 3.5 21 20H3L12 3.5Z"/><path d="M12 9v5M12 17.2h.01"/></svg></span>Pembinaan & SP</button>
       <button class="nav-item" data-page="reports" onclick="go('reports',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M6 3.5h9l3 3V20.5H6z"/><path d="M15 3.5v4h3M9 11h6M9 14h6M9 17h4"/></svg></span>Laporan KBM</button>
@@ -608,7 +836,7 @@ img,svg,input,button,textarea,select{max-width:100%}
     <div class="side-footer">
       <strong>KitaWorks</strong><br>
       LPK Kitamura Mirai Indonesia<br>
-      v1.1.0 • Simulasi 1 Tahun
+      v1.2.0 • Simulasi 1 Tahun
     </div>
   </aside>
   <div id="overlay" class="overlay hidden" onclick="toggleSidebar(false)"></div>
@@ -617,7 +845,7 @@ img,svg,input,button,textarea,select{max-width:100%}
     <!-- HOME -->
     <section id="page-home" class="page active">
       <button class="hero-btn" onclick="openStartAttendance()">
-        <div><strong>▶ Mulai Absensi</strong><small>Pilih tanggal untuk mulai mengisi daftar hadir siswa</small></div>
+        <div><strong>▶ Input Daftar Hadir</strong><small>Pilih tanggal untuk mengisi daftar hadir siswa</small></div>
         <div class="hero-arrow">›</div>
       </button>
       <div class="grid-2">
@@ -652,7 +880,7 @@ img,svg,input,button,textarea,select{max-width:100%}
     <section id="page-attendance" class="page">
       <input type="hidden" id="attendanceDate">
       <div id="attendanceNormal">
-        <div class="page-title"><h2>Daftar Hadir</h2><button id="holidayToggleBtn" class="btn btn-outline" onclick="markHoliday()">Tandai Hari Libur</button></div>
+        <div class="page-title"><h2>Input Daftar Hadir</h2><button id="holidayToggleBtn" class="btn btn-outline" onclick="markHoliday()">Tandai Hari Libur</button></div>
         <div class="toolbar">
           <button type="button" id="attendanceDateDisplay" class="date-display" onclick="openAttendanceDatePicker()"><span id="attendanceDateText">Pilih tanggal</span><svg viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="15" rx="2"/><path d="M7.5 3.5v4M16.5 3.5v4M3.5 9.5h17"/></svg></button>
           <button class="btn btn-secondary" onclick="setAllBehaviorGood()">Set Semua Hadir = Baik</button>
@@ -750,8 +978,8 @@ img,svg,input,button,textarea,select{max-width:100%}
 
 <script>
 const APP_PASSWORD = "sensei";
-const STORE_KEY = "kitaworks_demo_v30";
-const SETTINGS_KEY = "kitaworks_settings_demo_v30";
+const STORE_KEY = "kitaworks_demo_v41";
+const SETTINGS_KEY = "kitaworks_settings_demo_v41";
 let db = loadDB();
 let settings = Object.assign({cutoff:"07:45", recovery:5}, JSON.parse(localStorage.getItem(SETTINGS_KEY)||"{}"));
 let calCursor = new Date();
@@ -1812,6 +2040,572 @@ function seedSimulationIfNeeded(){
     db.agendas.push({id:`ag_${m}_2`,date:d2,title:["Ujian internal","Kegiatan LPK","Briefing kedisiplinan"][m%3],note:"Agenda simulasi KitaWorks"});
   }
   db.demoSeed={version:30,createdAt:new Date().toISOString(),description:"30 siswa aktif + 50 Lulus SO + simulasi 1 tahun"};
+}
+
+
+/* ===== KitaWorks v41 final overrides ===== */
+
+function toggleSidebar(force){
+  const sb=document.getElementById("sidebar"),ov=document.getElementById("overlay");
+  if(!sb||!ov)return;
+  const open=force!==undefined?force:!sb.classList.contains("open");
+  sb.classList.toggle("open",open);
+  ov.classList.toggle("hidden",!open);
+}
+function go(page,btn){
+  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+  document.getElementById("page-"+page)?.classList.add("active");
+  document.querySelectorAll(".nav-item").forEach(x=>x.classList.remove("active"));
+  (btn||document.querySelector(`[data-page="${page}"]`))?.classList.add("active");
+  toggleSidebar(false);
+  refreshAll();
+}
+
+
+/* Modal stack: date/time/dropdown pickers can open above forms without destroying the form underneath. */
+function showModal(content,extraClass=""){
+  const root=document.getElementById("modalRoot");if(!root)return;
+  const wrap=document.createElement("div");wrap.className="modal-backdrop";
+  wrap.innerHTML=`<div class="modal ${extraClass}">${content}</div>`;
+  wrap.addEventListener("click",e=>{if(e.target===wrap)closeModal()});
+  root.appendChild(wrap);
+}
+function closeModal(){
+  const root=document.getElementById("modalRoot");if(!root)return;
+  const layers=root.querySelectorAll(":scope > .modal-backdrop");
+  if(layers.length)layers[layers.length-1].remove();
+}
+function closeAllModals(){const root=document.getElementById("modalRoot");if(root)root.innerHTML=""}
+
+/* Generic modern dropdown used by every dynamic form in this build. */
+function openGenericChoice(button,kind){
+  const defs={
+    gender:{title:"Jenis Kelamin",values:["Laki-laki","Perempuan"]},
+    studentStatus:{title:"Status Siswa",values:["Belajar","Lulus SO"]}
+  };
+  const def=defs[kind];if(!def)return;
+  const hidden=document.getElementById(button.dataset.target);
+  const current=hidden?.value||"";
+  window.__genericChoice={button,kind,target:button.dataset.target};
+  showModal(`<div class="muted" style="font-size:12px">Pilih</div><h3 style="margin:4px 0 14px">${def.title}</h3>
+    <div class="choice-sheet">${def.values.map(v=>`<button type="button" class="choice-option ${v===current?"active":""}" onclick="chooseGenericValue('${v.replace(/'/g,"\\'")}')"><span>${esc(v)}</span><span class="choice-check"></span></button>`).join("")}</div>
+    <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Batal</button></div>`);
+}
+function chooseGenericValue(value){
+  const x=window.__genericChoice;if(!x)return;
+  const h=document.getElementById(x.target);if(h)h.value=value;
+  if(x.button){x.button.dataset.value=value;const s=x.button.querySelector("span");if(s)s.textContent=value}
+  closeModal();
+  if(x.kind==="studentStatus")toggleSOFields();
+}
+function openFieldDatePicker(hiddenId,displayId,title="Pilih Tanggal"){
+  const h=document.getElementById(hiddenId);if(!h)return;
+  openDatePicker(h.value||isoDate(new Date()),d=>{
+    h.value=d;const out=document.getElementById(displayId);if(out)out.querySelector("span").textContent=displayDateShort(d);
+  },title,"Pilih");
+}
+
+/* All student dates/dropdowns use KitaWorks custom controls, never native OS controls. */
+function openStudentModal(id=null){
+  const s=id?db.students.find(x=>x.id===id):null;
+  const start=s?.start||isoDate(new Date()),status=s?.status||"Belajar",gender=s?.gender||"Laki-laki";
+  showModal(`<h3>${s?"Edit":"Tambah"} Siswa</h3><div class="form-grid">
+    <div class="field"><label>Nomor Induk</label><input id="stNis" value="${esc(s?.nis||"")}" oninput="formatNIS(this)" autocapitalize="characters"></div>
+    <div class="field"><label>Nama Lengkap</label><input id="stName" value="${esc(s?.name||"")}" oninput="formatStudentName(this)" autocapitalize="words"></div>
+    <div class="field"><label>Jenis Kelamin</label>
+      <input id="stGender" type="hidden" value="${esc(gender)}">
+      <button type="button" class="choice-btn" data-target="stGender" data-value="${esc(gender)}" onclick="openGenericChoice(this,'gender')"><span>${esc(gender)}</span><svg viewBox="0 0 24 24"><path d="m7 9 5 5 5-5"/></svg></button>
+    </div>
+    <div class="field"><label>Tanggal Awal Belajar</label>
+      <input id="stStart" type="hidden" value="${start}">
+      <button id="stStartDisplay" type="button" class="date-display" onclick="openFieldDatePicker('stStart','stStartDisplay','Tanggal Awal Belajar')"><span>${displayDateShort(start)}</span><svg viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="15" rx="2"/><path d="M7.5 3.5v4M16.5 3.5v4M3.5 9.5h17"/></svg></button>
+    </div>
+    <div class="field"><label>Status</label>
+      <input id="stStatus" type="hidden" value="${esc(status)}">
+      <button type="button" class="choice-btn" data-target="stStatus" data-value="${esc(status)}" onclick="openGenericChoice(this,'studentStatus')"><span>${esc(status)}</span><svg viewBox="0 0 24 24"><path d="m7 9 5 5 5-5"/></svg></button>
+    </div>
+    <div id="soFields" class="full ${status==="Lulus SO"?"":"hidden"}"><div class="form-grid">
+      <div class="field"><label>Tanggal Lulus SO</label>
+        <input id="soDate" type="hidden" value="${s?.soDate||""}">
+        <button id="soDateDisplay" type="button" class="date-display" onclick="openFieldDatePicker('soDate','soDateDisplay','Tanggal Lulus SO')"><span>${s?.soDate?displayDateShort(s.soDate):"Pilih tanggal"}</span><svg viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="15" rx="2"/><path d="M7.5 3.5v4M16.5 3.5v4M3.5 9.5h17"/></svg></button>
+      </div>
+      <div class="field"><label>SO</label><input id="soName" value="${esc(s?.soName||"")}"></div>
+      <div class="field"><label>Kaisha</label><input id="kaisha" value="${esc(s?.kaisha||"")}"></div>
+      <div class="field"><label>Kumiai</label><input id="kumiai" value="${esc(s?.kumiai||"")}"></div>
+      <div class="field"><label>Job</label><input id="job" value="${esc(s?.job||"")}"></div>
+    </div></div>
+  </div>
+  <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Batal</button><button class="btn btn-primary" onclick="saveStudent('${id||""}')">Simpan</button></div>`);
+}
+function toggleSOFields(){
+  const h=document.getElementById("stStatus"),so=document.getElementById("soFields");
+  if(so)so.classList.toggle("hidden",h?.value!=="Lulus SO");
+}
+function saveStudent(id){
+  const nis=document.getElementById("stNis").value.trim().toUpperCase();
+  const name=titleCaseName(document.getElementById("stName").value.trim());
+  if(!nis||!name)return alert("NIS dan nama wajib diisi.");
+  if(db.students.some(x=>x.nis===nis&&x.id!==id))return alert("Nomor induk sudah digunakan.");
+  const old=id?db.students.find(x=>x.id===id):null;
+  const obj={
+    id:id||crypto.randomUUID(),nis,name,
+    gender:document.getElementById("stGender").value,
+    start:document.getElementById("stStart").value,
+    status:document.getElementById("stStatus").value,
+    soDate:document.getElementById("soDate")?.value||"",
+    soName:document.getElementById("soName")?.value||"",
+    kaisha:document.getElementById("kaisha")?.value||"",
+    kumiai:document.getElementById("kumiai")?.value||"",
+    job:document.getElementById("job")?.value||"",
+    sp3Deactivations:old?.sp3Deactivations||[]
+  };
+  if(old)Object.assign(old,obj);else db.students.push(obj);
+  recalcSP();saveDB();closeModal();
+}
+
+/* Two explicit checks before a student and all related history are permanently removed. */
+function requestDeleteStudent(id){
+  const s=db.students.find(x=>x.id===id);if(!s)return;
+  showModal(`<h3>Hapus siswa?</h3><p><strong>${esc(s.name)}</strong></p><p class="muted">Absensi, catatan, dan riwayat siswa ini juga akan dihapus. Apakah Sensei yakin ingin melanjutkan?</p>
+    <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Batal</button><button class="btn btn-danger" onclick="confirmDeleteStudentStep2('${id}')">Ya, lanjut</button></div>`);
+}
+function confirmDeleteStudentStep2(id){
+  const s=db.students.find(x=>x.id===id);if(!s)return;
+  showModal(`<h3>Konfirmasi sekali lagi</h3><p>Hapus <strong>${esc(s.name)}</strong> secara permanen?</p><p class="muted">Tindakan ini tidak dapat dibatalkan kecuali melalui file backup.</p>
+    <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Jangan Hapus</button><button class="btn btn-danger" onclick="deleteStudentPermanent('${id}')">Hapus Permanen</button></div>`);
+}
+function deleteStudentPermanent(id){
+  db.students=db.students.filter(s=>s.id!==id);
+  Object.values(db.attendance).forEach(day=>{if(day.records)delete day.records[id]});
+  recalcSP();localStorage.setItem(STORE_KEY,JSON.stringify(db));closeModal();refreshAll();
+}
+function renderStudents(){
+  const el=document.getElementById("studentsBody");if(!el)return;
+  const q=(document.getElementById("studentSearch")?.value||"").toLowerCase();
+  const arr=[...db.students].filter(s=>(s.nis+" "+s.name).toLowerCase().includes(q))
+    .sort((a,b)=>(a.status==="Belajar"?0:1)-(b.status==="Belajar"?0:1)||a.nis.localeCompare(b.nis));
+  el.innerHTML=arr.length?arr.map(s=>`<tr style="${s.status==="Lulus SO"?"opacity:.56":""}">
+    <td>${esc(s.nis)}</td>
+    <td><strong>${esc(s.name)}</strong>${s.status==="Lulus SO"?`<div class="muted" style="font-size:9px;margin-top:3px">SO ${esc(s.soName||"-")}<br>${esc(s.kaisha||"-")}</div>`:""}</td>
+    <td>${s.gender==="Laki-laki"?'<span class="gender-mark male">♂</span> L':'<span class="gender-mark female">♀</span> P'}</td>
+    <td>${s.start?displayDateShort(s.start):"-"}</td>
+    <td><span class="status-pill ${s.status==="Lulus SO"?"s-lulus":"s-hadir"}">${esc(s.status)}</span>${s.status==="Lulus SO"&&s.soDate?`<div class="muted" style="font-size:9px;margin-top:3px">${displayDateShort(s.soDate)}</div>`:""}</td>
+    <td>${s.spLevel?`SP${s.spLevel}`:"-"}</td>
+    <td><div class="student-actions"><button class="btn btn-outline" onclick="openStudentModal('${s.id}')">Edit</button><button class="btn btn-outline" onclick="openStudentDetail('${s.id}')">Riwayat</button><button class="btn btn-danger" onclick="requestDeleteStudent('${s.id}')">Hapus</button></div></td>
+  </tr>`).join(""):`<tr><td colspan="7"><div class="empty">Belum ada data siswa.</div></td></tr>`;
+}
+
+/* Attendance: no Horenso and no NIS on card. */
+function loadAttendanceForm(){
+  const date=document.getElementById("attendanceDate")?.value;if(!date)return;
+  const hol=db.holidays[date],normal=document.getElementById("attendanceNormal"),holidayMode=document.getElementById("attendanceHolidayMode");
+  if(hol){
+    normal.classList.add("hidden");holidayMode.classList.remove("hidden");
+    holidayMode.innerHTML=`<div class="holiday-lock-card"><div class="holiday-icon"><svg viewBox="0 0 24 24"><path d="M4 7h16M7 3.5v5M17 3.5v5"/><rect x="4" y="5.5" width="16" height="15" rx="2"/><path d="M8 12h8M8 16h5"/></svg></div><h3>Hari Libur</h3><p>${esc(hol)}</p><button class="btn holiday-work-btn" onclick="markWorkingDay()">Tandai Hari Kerja</button></div>`;
+    updateSaveButton();return;
+  }
+  normal.classList.remove("hidden");holidayMode.classList.add("hidden");holidayMode.innerHTML="";
+  const day=db.attendance[date]||{records:{}};
+  const active=db.students.filter(s=>s.status==="Belajar").sort((a,b)=>a.nis.localeCompare(b.nis));
+  const body=document.getElementById("attendanceBody");
+  body.innerHTML=active.length?active.map((s,i)=>{
+    const r=day.records?.[s.id]||{};
+    const gender=s.gender==="Laki-laki"?`<span class="gender-mark male" title="Laki-laki">♂</span>`:`<span class="gender-mark female" title="Perempuan">♀</span>`;
+    return `<tr data-sid="${s.id}">
+      <td class="att-no">${i+1}</td>
+      <td class="att-name"><strong>${esc(s.name)}</strong>${gender}</td>
+      <td class="att-fields">
+        <div class="att-field"><span class="att-field-label">Jam Datang</span><button type="button" class="time-display" onclick="openTimePicker(this)"><span class="time-value">${r.time||"--:--"}</span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></button></div>
+        <div class="att-field"><span class="att-field-label">Status</span><button type="button" class="choice-btn att-status" data-value="${esc(r.status||"")}" onclick="openAttendanceChoice(this,'status')"><span>${esc(r.status||"Pilih")}</span><svg viewBox="0 0 24 24"><path d="m7 9 5 5 5-5"/></svg></button></div>
+        <div class="att-field"><span class="att-field-label">Perilaku</span><button type="button" class="choice-btn att-behavior" data-value="${esc(r.behavior||"")}" onclick="openAttendanceChoice(this,'behavior')"><span>${esc(r.behavior||"-")}</span><svg viewBox="0 0 24 24"><path d="m7 9 5 5 5-5"/></svg></button></div>
+      </td>
+      <td class="att-note"><input class="att-note note-input" value="${esc(r.note||"")}" placeholder="Opsional" oninput="markDirty()"></td>
+    </tr>`;
+  }).join(""):`<tr><td><div class="empty">Belum ada siswa aktif.</div></td></tr>`;
+  dirty=false;updateSaveButton();
+}
+function statusChanged(el){
+  const tr=el.closest("tr"),time=tr?.querySelector(".time-display"),v=el.dataset.value||"";
+  if(v!=="Hadir"&&v!=="Telat"&&time)time.querySelector(".time-value").textContent="--:--";
+  markDirty();
+}
+function collectAttendance(){
+  const records={};
+  document.querySelectorAll("#attendanceBody tr[data-sid]").forEach(tr=>{
+    const sid=tr.dataset.sid,status=tr.querySelector(".att-status")?.dataset.value||"";
+    const tv=tr.querySelector(".time-display .time-value")?.textContent||"--:--";
+    records[sid]={
+      time:tv==="--:--"?"":tv,status,
+      behavior:tr.querySelector(".att-behavior")?.dataset.value||"",
+      note:tr.querySelector(".att-note")?.value.trim()||""
+    };
+  });
+  return records;
+}
+function openAttendanceChoice(btn,kind){
+  if(btn.disabled)return;
+  const map={status:["Hadir","Telat","Izin","Sakit","Tanpa Keterangan"],behavior:["Baik","Cukup","Perlu Pembinaan"]};
+  if(!map[kind])return;
+  const title={status:"Status Kehadiran",behavior:"Penilaian Perilaku"}[kind],current=btn.dataset.value||"";
+  window.__choiceTarget=btn;window.__choiceKind=kind;
+  showModal(`<div class="muted" style="font-size:12px">Pilih</div><h3 style="margin:4px 0 14px">${title}</h3><div class="choice-sheet">${map[kind].map(v=>`<button type="button" class="choice-option ${v===current?"active":""}" onclick="chooseAttendanceValue('${v.replace(/'/g,"\\'")}')"><span>${v}</span><span class="choice-check"></span></button>`).join("")}</div><div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Batal</button></div>`);
+}
+
+/* Time picker handles attendance, settings and agenda using one modern wheel. */
+function confirmWheelTime(){
+  const w=window.__wheelTime,btn=window.__timeTarget;if(!w||!btn)return;
+  let h=Number(w.hour);if(w.ampm==="PM"&&h!==12)h+=12;if(w.ampm==="AM"&&h===12)h=0;
+  const value=`${String(h).padStart(2,"0")}:${w.minute}`;
+  btn.querySelector(".time-value").textContent=value;
+  const hiddenId=btn.dataset.timeHidden;
+  if(hiddenId){const hidden=document.getElementById(hiddenId);if(hidden)hidden.value=value;closeModal();return}
+  if(btn.dataset.settingsTime){document.getElementById("cutoffTime").value=value;closeModal();return}
+  closeModal();timeChanged(btn);markDirty();
+}
+
+/* Monthly agenda grid + per-hour daily detail. */
+function renderCalendar(){
+  const el=document.getElementById("calendarGrid");if(!el)return;
+  const y=calCursor.getFullYear(),m=calCursor.getMonth();
+  const title=document.getElementById("calendarTitle");if(title)title.textContent=new Date(y,m,1).toLocaleDateString("id-ID",{month:"long",year:"numeric"});
+  const head=el.parentElement?.querySelector(".calendar-head");
+  if(head){
+    const bs=head.querySelectorAll("button");bs.forEach(b=>b.classList.add("cal-nav"));
+  }
+  const first=new Date(y,m,1),start=(first.getDay()+6)%7,daysIn=new Date(y,m+1,0).getDate(),prevDays=new Date(y,m,0).getDate();
+  let out=["Sen","Sel","Rab","Kam","Jum","Sab","Min"].map(x=>`<div class="dow">${x}</div>`).join("");
+  for(let i=0;i<42;i++){
+    let n,d,muted=false;
+    if(i<start){n=prevDays-start+i+1;d=new Date(y,m-1,n);muted=true}
+    else if(i>=start+daysIn){n=i-(start+daysIn)+1;d=new Date(y,m+1,n);muted=true}
+    else{n=i-start+1;d=new Date(y,m,n)}
+    const iso=isoDate(d),ags=db.agendas.filter(a=>a.date===iso).sort((a,b)=>(a.time||"").localeCompare(b.time||"")),hol=db.holidays[iso],att=db.attendance[iso];
+    out+=`<div class="day ${muted?"muted-day":""} ${iso===isoDate(new Date())?"today":""}" onclick="calendarDayClick('${iso}')">
+      <div class="day-num">${n}</div><div class="day-badges">
+      ${hol?`<div class="mini mini-holiday">Libur</div>`:""}
+      ${att?`<div class="mini mini-att">✓ Hadir</div>`:""}
+      ${ags.slice(0,2).map(a=>`<div class="mini mini-agenda">${esc(a.time||"")} ${esc(a.title)}</div>`).join("")}
+      ${ags.length>2?`<div class="mini">+${ags.length-2} agenda</div>`:""}
+      </div></div>`;
+  }
+  el.innerHTML=out;
+}
+function dailyDefaultSchedule(date){
+  const d=parseISO(date),wd=d.getDay();
+  if(wd===0||wd===6||db.holidays[date])return[];
+  return [
+    {time:"08:00–10:00",title:"Belajar",note:"Jadwal belajar default"},
+    {time:"10:00–10:15",title:"Istirahat",note:"Istirahat 15 menit"},
+    {time:"10:15–12:00",title:"Belajar",note:"Jadwal belajar default"}
+  ];
+}
+function calendarDayClick(date){
+  const hol=db.holidays[date],defaults=dailyDefaultSchedule(date);
+  const extra=db.agendas.filter(a=>a.date===date).sort((a,b)=>(a.time||"99:99").localeCompare(b.time||"99:99"));
+  const timeline=[
+    ...defaults.map(x=>({...x,kind:"default"})),
+    ...extra.map(x=>({time:x.time||"Tanpa jam",title:x.title,note:x.note||"",id:x.id,kind:"agenda"}))
+  ].sort((a,b)=>String(a.time).localeCompare(String(b.time)));
+  showModal(`<h3>${fmtDate(date)}</h3>
+    ${hol?`<div class="badge b-sp1" style="margin:3px 0 8px">Hari Libur・${esc(hol)}</div>`:""}
+    <div class="modal-actions" style="justify-content:flex-start">
+      <button class="btn btn-primary" onclick="closeModal();openAgendaModal('${date}')">+ Tambah Agenda</button>
+      ${hol?`<button class="btn btn-outline" onclick="closeModal();setAttendanceDate('${date}');go('attendance');loadAttendanceForm()">Lihat Hari Libur</button>`:`<button class="btn btn-outline" onclick="closeModal();startAttendanceFor('${date}')">Input Daftar Hadir</button>`}
+    </div>
+    <div class="day-timeline">${timeline.length?timeline.map(x=>`<div class="timeline-row"><div class="timeline-time">${esc(x.time)}</div><div><div class="timeline-title"><strong>${esc(x.title)}</strong></div>${x.note?`<div class="timeline-note">${esc(x.note)}</div>`:""}${x.kind==="agenda"?`<button class="btn btn-danger" style="margin-top:6px;padding:5px 8px;font-size:10px" onclick="deleteAgenda('${x.id}')">Hapus agenda</button>`:""}</div></div>`).join(""):'<div class="empty">Tidak ada kegiatan terjadwal.</div>'}</div>`);
+}
+function openAgendaModal(date=isoDate(new Date())){
+  showModal(`<h3>Tambah Agenda</h3><div class="form-grid">
+    <div class="field"><label>Tanggal</label>
+      <input id="agDate" type="hidden" value="${date}">
+      <button id="agDateDisplay" type="button" class="date-display" onclick="openFieldDatePicker('agDate','agDateDisplay','Tanggal Agenda')"><span>${displayDateShort(date)}</span><svg viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="15" rx="2"/><path d="M7.5 3.5v4M16.5 3.5v4M3.5 9.5h17"/></svg></button>
+    </div>
+    <div class="field"><label>Jam (opsional)</label>
+      <input id="agTime" type="hidden" value="">
+      <button type="button" class="time-display" data-time-hidden="agTime" onclick="openTimePicker(this)"><span class="time-value">--:--</span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></button>
+    </div>
+    <div class="field full"><label>Judul Agenda</label><input id="agTitle" placeholder="Contoh: Mensetsu PT ABC"></div>
+    <div class="field full"><label>Keterangan</label><textarea id="agNote" placeholder="Isi bebas..."></textarea></div>
+  </div><div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Batal</button><button class="btn btn-primary" onclick="saveAgenda()">Simpan Agenda</button></div>`);
+}
+
+/* SP engine: SP1 = 5 lates. SP3 can only be manually deactivated with an Atasan reason. */
+function recalcSP(){
+  const students=db.students;
+  students.forEach(s=>{s.spLevel=0;s.spProgress=0;s.spLateCount=0;s.spHistory=[]});
+  const dateSet=new Set(Object.keys(db.attendance));
+  students.forEach(s=>(s.sp3Deactivations||[]).forEach(x=>dateSet.add(x.date)));
+  const dates=[...dateSet].sort();
+  for(const date of dates){
+    for(const s of students){
+      const r=db.attendance[date]?.records?.[s.id];
+      if(r){
+        if(r.status==="Telat"){
+          if(s.spLevel===0){
+            s.spLateCount=(s.spLateCount||0)+1;
+            if(s.spLateCount>=5){
+              s.spLevel=1;s.spProgress=0;s.spLateCount=0;
+              s.spHistory.push({date,text:"SP1 aktif・Mencapai 5 kali telat・Teguran lisan + push-up 50 kali"});
+            }
+          }else if(s.spLevel===1){
+            s.spLevel=2;s.spProgress=0;
+            s.spHistory.push({date,text:"Naik SP2・Telat sebelum 5 kali tepat waktu・Teguran lisan + tugas tambahan + push-up"});
+          }else if(s.spLevel===2){
+            s.spLevel=3;s.spProgress=0;
+            s.spHistory.push({date,text:"Naik SP3・Perlu keputusan atasan"});
+          }
+        }else if(r.status==="Hadir"&&s.spLevel>0&&s.spLevel<3){
+          s.spProgress=(s.spProgress||0)+1;
+          if(s.spProgress>=settings.recovery){
+            if(s.spLevel===2){
+              s.spLevel=1;s.spProgress=0;
+              s.spHistory.push({date,text:"SP2 turun ke SP1 setelah 5 kali tepat waktu berturut-turut"});
+            }else{
+              s.spLevel=0;s.spProgress=0;s.spLateCount=0;
+              s.spHistory.push({date,text:"SP1 selesai setelah 5 kali tepat waktu berturut-turut"});
+            }
+          }
+        }else if(s.spLevel>0&&s.spLevel<3&&["Izin","Sakit","Tanpa Keterangan"].includes(r.status)){
+          s.spProgress=0;
+        }
+      }
+      const ds=(s.sp3Deactivations||[]).filter(x=>x.date===date);
+      ds.forEach(x=>{
+        s.spLevel=0;s.spProgress=0;s.spLateCount=0;
+        s.spHistory.push({date,text:`SP3 dinonaktifkan・Alasan Atasan: ${x.reason}`});
+      });
+    }
+  }
+}
+function renderSP(){
+  const el=document.getElementById("spList");if(!el)return;
+  const arr=db.students.filter(s=>s.status==="Belajar"&&(s.spLevel||0)>0).sort((a,b)=>b.spLevel-a.spLevel||a.name.localeCompare(b.name));
+  el.innerHTML=arr.length?arr.map(s=>`<div class="attention-row">
+    <div><strong>${esc(s.name)}</strong><div class="muted" style="font-size:11px">${s.gender==="Laki-laki"?'<span class="gender-mark male">♂</span>':'<span class="gender-mark female">♀</span>'} ${esc(s.nis)}</div></div>
+    <div><span class="badge b-sp${s.spLevel}">SP${s.spLevel}</span></div>
+    <div>${s.spLevel===3?"Perlu Keputusan Atasan":`Pemulihan ${s.spProgress||0}/${settings.recovery} tepat waktu`}</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn btn-outline" onclick="openStudentDetail('${s.id}')">Riwayat</button>${s.spLevel===3?`<button class="btn btn-primary" onclick="openSP3('${s.id}')">Nonaktifkan SP3</button>`:""}</div>
+  </div>`).join(""):`<div class="empty">Tidak ada SP aktif.</div>`;
+}
+function openSP3(id){
+  const s=db.students.find(x=>x.id===id);if(!s||s.spLevel!==3)return;
+  showModal(`<h3>Nonaktifkan SP3</h3><p><strong>${esc(s.name)}</strong></p><p class="muted">Gunakan setelah Sensei sudah menanyakan kepada atasan dan penanganan dilakukan di luar aplikasi.</p>
+    <div class="field"><label>Alasan Atasan menonaktifkan SP3</label><textarea id="sp3DisableReason" placeholder="Contoh: Sudah diberikan peringatan keras dan diberi kesempatan memperbaiki kedisiplinan."></textarea></div>
+    <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Batal</button><button class="btn btn-primary" onclick="deactivateSP3('${id}')">Nonaktifkan SP3</button></div>`);
+}
+function deactivateSP3(id){
+  const s=db.students.find(x=>x.id===id),ta=document.getElementById("sp3DisableReason");
+  const reason=ta?.value.trim()||"";if(!s||!reason)return alert("Alasan dari atasan wajib diisi.");
+  s.sp3Deactivations=s.sp3Deactivations||[];
+  s.sp3Deactivations.push({date:isoDate(new Date()),reason,at:new Date().toISOString()});
+  recalcSP();localStorage.setItem(STORE_KEY,JSON.stringify(db));closeModal();refreshAll();
+}
+
+/* 3 complete previous months + full Sensei notes/history. */
+function learningDuration(startIso,endDate=new Date()){
+  if(!startIso)return"-";
+  const start=parseISO(startIso),end=new Date(endDate);start.setHours(12,0,0,0);end.setHours(12,0,0,0);
+  if(end<start)return"0 hari";
+  let years=end.getFullYear()-start.getFullYear(),months=end.getMonth()-start.getMonth(),days=end.getDate()-start.getDate();
+  if(days<0){months--;const prev=new Date(end.getFullYear(),end.getMonth(),0);days+=prev.getDate()}
+  if(months<0){years--;months+=12}
+  const parts=[];if(years)parts.push(`${years} tahun`);if(months)parts.push(`${months} bulan`);if(days||!parts.length)parts.push(`${days} hari`);
+  return parts.join(" ");
+}
+function previousThreeMonthsRange(){
+  const now=new Date(),end=new Date(now.getFullYear(),now.getMonth(),0),start=new Date(end.getFullYear(),end.getMonth()-2,1);
+  return {start:isoDate(start),end:isoDate(end),label:`${start.toLocaleDateString("id-ID",{month:"long"}).toLowerCase()} – ${end.toLocaleDateString("id-ID",{month:"long",year:"numeric"}).toLowerCase()}`};
+}
+function minutesLate(time){
+  if(!time)return null;const [h,m]=time.split(":").map(Number),[ch,cm]=settings.cutoff.split(":").map(Number);
+  return Math.max(0,(h*60+m)-(ch*60+cm));
+}
+function openStudentDetail(id){
+  const s=db.students.find(x=>x.id===id);if(!s)return;
+  const range=previousThreeMonthsRange();
+  let totalDays=0,present=0,onTime=0,late=0,izin=0,sakit=0,tk=0,lateMinutes=[];
+  Object.entries(db.attendance).forEach(([date,day])=>{
+    if(date<range.start||date>range.end)return;
+    const r=day.records?.[id];if(!r)return;
+    totalDays++;
+    if(r.status==="Hadir"){present++;onTime++}
+    else if(r.status==="Telat"){present++;late++;const n=minutesLate(r.time);if(n!==null)lateMinutes.push(n)}
+    else if(r.status==="Izin")izin++;
+    else if(r.status==="Sakit")sakit++;
+    else if(r.status==="Tanpa Keterangan")tk++;
+  });
+  const avg=lateMinutes.length?Math.round(lateMinutes.reduce((a,b)=>a+b,0)/lateMinutes.length):0;
+  const notes=[];
+  Object.entries(db.attendance).forEach(([date,day])=>{
+    const r=day.records?.[id];if(r?.note?.trim())notes.push({date,kind:"Catatan Sensei",text:r.note.trim()});
+  });
+  (s.spHistory||[]).forEach(h=>notes.push({date:h.date,kind:"Riwayat SP",text:h.text}));
+  notes.sort((a,b)=>b.date.localeCompare(a.date));
+  const gender=s.gender==="Laki-laki"?'<span class="gender-mark male">♂</span>':'<span class="gender-mark female">♀</span>';
+  showModal(`<div class="student-detail-head"><h3>${esc(s.name)} ${gender}</h3><div class="muted">NIS ${esc(s.nis)} • Belajar sejak ${s.start?displayDateShort(s.start):"-"}</div><div style="margin-top:7px"><strong>Lama belajar: ${learningDuration(s.start)}</strong></div></div>
+    <h3 style="font-size:14px;margin:17px 0 2px">Ringkasan 3 bulan terakhir</h3><div class="muted" style="font-size:11px">${esc(range.label)}</div>
+    <div class="student-summary-list">
+      <div class="student-summary-row"><span>Kehadiran</span><span>${present} dari ${totalDays} hari belajar</span></div>
+      <div class="student-summary-row"><span>Tepat waktu</span><span>${onTime} hari</span></div>
+      <div class="student-summary-row"><span><strong>Telat</strong></span><span><strong>${late} kali</strong></span></div>
+      <div class="student-summary-row"><span>Rata-rata keterlambatan</span><span>${avg} menit</span></div>
+      <div class="student-summary-row"><span>Izin</span><span>${izin} hari</span></div>
+      <div class="student-summary-row"><span>Sakit</span><span>${sakit} hari</span></div>
+      <div class="student-summary-row"><span>Tanpa keterangan</span><span>${tk} hari</span></div>
+      <div class="student-summary-row"><span>SP saat ini</span><span>${s.spLevel?`SP${s.spLevel}`:"Tidak Ada"}</span></div>
+    </div>
+    <h3 style="font-size:14px;margin:0">Riwayat & Catatan Sensei</h3><div class="muted" style="font-size:11px">Semua catatan sejak siswa mulai belajar.</div>
+    <div class="history-timeline">${notes.length?notes.map(n=>`<div class="history-entry"><div class="date">${displayDateShort(n.date)}</div><span class="kind">${esc(n.kind)}</span><div>${esc(n.text)}</div></div>`).join(""):'<div class="empty">Belum ada catatan Sensei atau riwayat SP.</div>'}</div>`);
+}
+
+/* Daily/Monthly reports no longer contain Horenso. */
+function reportGroups(date){
+  const entries=Object.entries(db.attendance[date]?.records||{}).map(([sid,r])=>({sid,name:studentName(sid),...r}));
+  const byStatus=x=>entries.filter(r=>r.status===x).map(r=>r.name),byBehavior=x=>entries.filter(r=>r.behavior===x).map(r=>r.name);
+  return {hadir:byStatus("Hadir"),telat:byStatus("Telat"),izin:byStatus("Izin"),sakit:byStatus("Sakit"),tk:byStatus("Tanpa Keterangan"),baik:byBehavior("Baik"),cukup:byBehavior("Cukup"),pp:byBehavior("Perlu Pembinaan")};
+}
+function buildReportText(date,condition,suggestion){
+  const x=reportGroups(date);
+  return `*LAPORAN KBM*
+*LPK KITAMURA MIRAI INDONESIA*
+${fmtDate(date)}
+
+*Kehadiran*
+${reportLine("Hadir",x.hadir)}
+${reportLine("Telat",x.telat)}
+${reportLine("Izin",x.izin)}
+${reportLine("Sakit",x.sakit)}
+${reportLine("Tanpa Keterangan",x.tk)}
+
+*Perilaku*
+${reportLine("Baik",x.baik)}
+${reportLine("Cukup",x.cukup)}
+${reportLine("Perlu Pembinaan",x.pp)}
+
+*Kondisi KBM*
+${condition||"-"}
+
+*Saran*
+${suggestion||"-"}`;
+}
+function monthlyRows(){
+  const dates=Object.keys(db.attendance).filter(d=>d.startsWith(reportMonth)).sort(),ids=new Set();
+  dates.forEach(d=>Object.keys(db.attendance[d]?.records||{}).forEach(id=>ids.add(id)));
+  return [...ids].map(id=>{
+    const s=db.students.find(x=>x.id===id);if(!s)return null;
+    const row={id,nis:s.nis,name:s.name,hadir:0,telat:0,izin:0,sakit:0,tk:0,baik:0,cukup:0,pp:0};
+    dates.forEach(d=>{const r=db.attendance[d]?.records?.[id];if(!r)return;
+      if(r.status==="Hadir")row.hadir++;else if(r.status==="Telat")row.telat++;else if(r.status==="Izin")row.izin++;else if(r.status==="Sakit")row.sakit++;else if(r.status==="Tanpa Keterangan")row.tk++;
+      if(r.behavior==="Baik")row.baik++;else if(r.behavior==="Cukup")row.cukup++;else if(r.behavior==="Perlu Pembinaan")row.pp++;
+    });return row;
+  }).filter(Boolean).sort((a,b)=>a.nis.localeCompare(b.nis));
+}
+function renderMonthlyReport(){
+  const text=document.getElementById("reportMonthText");if(text)text.textContent=monthLabel(reportMonth);
+  const rows=monthlyRows(),dates=Object.keys(db.attendance).filter(d=>d.startsWith(reportMonth));
+  const totalLate=rows.reduce((a,r)=>a+r.telat,0),need=rows.filter(r=>r.pp>0||r.tk>0||r.telat>=3).length;
+  const summary=document.getElementById("monthlySummary");
+  if(summary)summary.innerHTML=[["Siswa direkap",rows.length],["Hari KBM",dates.length],["Total keterlambatan",totalLate],["Perlu perhatian",need]].map(([l,v])=>`<div class="monthly-stat"><span>${l}</span><strong>${v}</strong></div>`).join("");
+  const host=document.getElementById("monthlyTable");if(!host)return;
+  if(!rows.length){host.innerHTML=`<div class="empty">Belum ada data kehadiran untuk ${monthLabel(reportMonth)}.</div>`;return}
+  host.innerHTML=`<div class="monthly-table-wrap"><table><thead><tr><th>No</th><th>NIS</th><th>Nama</th><th>Hadir</th><th>Telat</th><th>Izin</th><th>Sakit</th><th>Tanpa Keterangan</th><th>Baik</th><th>Cukup</th><th>Perlu Pembinaan</th></tr></thead><tbody>${rows.map((r,i)=>`<tr><td>${i+1}</td><td>${esc(r.nis)}</td><td><strong>${esc(r.name)}</strong></td><td>${r.hadir}</td><td>${r.telat}</td><td>${r.izin}</td><td>${r.sakit}</td><td>${r.tk}</td><td>${r.baik}</td><td>${r.cukup}</td><td>${r.pp}</td></tr>`).join("")}</tbody></table></div>`;
+}
+function makeMonthlySheetXML(rows){
+  const labels=[["Bulan",monthLabel(reportMonth)],["Total siswa",rows.length],["Hari KBM",Object.keys(db.attendance).filter(d=>d.startsWith(reportMonth)).length],["Total telat",rows.reduce((a,r)=>a+r.telat,0)],["Tanpa keterangan",rows.reduce((a,r)=>a+r.tk,0)],["Perlu pembinaan",rows.filter(r=>r.pp>0).length]];
+  const headers=["No","NIS","Nama","Hadir","Telat","Izin","Sakit","Tanpa Keterangan","Baik","Cukup","Perlu Pembinaan"];
+  const cell=(ref,val,style=0)=>typeof val==="number"?`<c r="${ref}" s="${style}"><v>${val}</v></c>`:`<c r="${ref}" s="${style}" t="inlineStr"><is><t>${xmlEscape(val)}</t></is></c>`;
+  let xmlRows=`<row r="1" ht="24">${cell("A1",`Rekap Kehadiran ${monthLabel(reportMonth)}`,1)}</row>`;
+  labels.forEach((r,i)=>{const rr=i+2;xmlRows+=`<row r="${rr}">${cell(`A${rr}`,r[0],2)}${cell(`B${rr}`,r[1],0)}</row>`});
+  const hr=8;xmlRows+=`<row r="${hr}" ht="28">${headers.map((h,i)=>cell(`${xlsxCol(i+1)}${hr}`,h,3)).join("")}</row>`;
+  rows.forEach((r,i)=>{const rr=hr+i+1,vals=[i+1,r.nis,r.name,r.hadir,r.telat,r.izin,r.sakit,r.tk,r.baik,r.cukup,r.pp];xmlRows+=`<row r="${rr}">${vals.map((v,ci)=>cell(`${xlsxCol(ci+1)}${rr}`,v,ci===1||ci===2?0:4)).join("")}</row>`});
+  const last=Math.max(hr+rows.length,hr);
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><dimension ref="A1:K${last}"/><sheetViews><sheetView workbookViewId="0" tabSelected="1"><pane ySplit="8" topLeftCell="A9" activePane="bottomLeft" state="frozen"/><selection pane="bottomLeft" activeCell="A9" sqref="A9"/></sheetView></sheetViews><cols><col min="1" max="1" width="6" customWidth="1"/><col min="2" max="2" width="14" customWidth="1"/><col min="3" max="3" width="28" customWidth="1"/><col min="4" max="11" width="16" customWidth="1"/></cols><sheetData>${xmlRows}</sheetData><autoFilter ref="A8:K${last}"/></worksheet>`;
+}
+
+/* More reliable logout: clear auth, then reload same page so login is always the first state. */
+function doLogout(){
+  sessionStorage.removeItem("kw_auth");kwAllowExit=true;dirty=false;
+  try{location.reload()}catch(_){
+    document.getElementById("app")?.classList.add("hidden");
+    document.getElementById("loginScreen")?.classList.remove("hidden");
+  }
+}
+function requestLogout(){
+  toggleSidebar(false);
+  if(dirty){showModal(`<h3>Absensi belum disimpan</h3><p class="muted">Simpan perubahan sebelum logout agar data tidak hilang.</p><div class="modal-actions"><button class="btn btn-primary" onclick="closeModal()">Kembali</button></div>`);return}
+  showModal(`<h3>Logout dari KitaWorks?</h3><p class="muted">Data yang sudah tersimpan tetap aman di perangkat ini.</p><div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Batal</button><button class="btn btn-primary" onclick="doLogout()">Logout</button></div>`);
+}
+function openStartAttendance(){openDatePicker(isoDate(new Date()),date=>startAttendanceFor(date),"Pilih Tanggal","Input Daftar Hadir")}
+
+/* Fresh deterministic one-year simulation: 30 active, 8 Lulus SO, varied data, holidays/agendas/reports, SP1/SP2/SP3 on different students. */
+function seedSimulationIfNeeded(){
+  if(db.students?.length)return;
+  const activeNames=[
+    "Made Suartawan","Ayu Lestari","Komang Aditya","Putu Mahendra","Kadek Ari Pratama","Ni Luh Sari Dewi","Dewa Gede Putra","Wayan Kurniawan","Desak Made Puspita","Gede Arya Saputra",
+    "Komang Yuni Lestari","Putu Eka Wijaya","Kadek Dwi Anggreni","Made Bintang Pramana","Ni Made Ratih","Wayan Yoga Pratama","Putu Ayu Maharani","Komang Bagus Setiawan","Kadek Intan Permata","Gede Surya Dharma",
+    "Ni Luh Putu Widiari","Made Agus Santika","Komang Sri Wahyuni","Putu Bayu Pradana","Kadek Novi Ariani","Wayan Dika Saputra","Ni Made Citra Dewi","Gede Rama Putra","Komang Trisna Yanti","Putu Fajar Mahardika"
+  ];
+  const gradNames=["Agus Setiawan","Rina Wulandari","Budi Santoso","Siti Aisyah","Deni Kurniawan","Dewi Anggraini","Fajar Nugraha","Nadia Putri"];
+  const soNames=["SO Sakura","SO Mirai","SO Hikari","SO Kizuna"],kaisha=["Yamato Foods","Sakura Seiki","Mirai Kensetsu","Hikari Service"],kumiai=["Kumiai Osaka","Kumiai Aichi","Kumiai Gifu","Kumiai Hyogo"],jobs=["Food Processing","Kensetsu","Kikai Kensa","Kaigo"];
+  const now=new Date();now.setHours(12,0,0,0);const end=isoDate(now),st=new Date(now);st.setFullYear(st.getFullYear()-1);st.setDate(st.getDate()+1);const start=isoDate(st);
+  const add=(ds,n)=>{const x=parseISO(ds);x.setDate(x.getDate()+n);return isoDate(x)};
+  activeNames.forEach((name,i)=>db.students.push({id:`stu_a_${String(i+1).padStart(2,"0")}`,nis:`KTMR${String(i+1).padStart(3,"0")}`,name,gender:i%3===1?"Perempuan":"Laki-laki",start:add(start,-70-(i%95)),status:"Belajar",sp3Deactivations:[]}));
+  gradNames.forEach((name,i)=>{
+    const soDate=add(start,48+i*34);
+    db.students.push({id:`stu_g_${String(i+1).padStart(2,"0")}`,nis:`KTMR${String(i+31).padStart(3,"0")}`,name,gender:i%2?"Perempuan":"Laki-laki",start:add(start,-170-i*11),status:"Lulus SO",soDate,soName:soNames[i%4],kaisha:kaisha[i%4],kumiai:kumiai[i%4],job:jobs[i%4],sp3Deactivations:[]});
+  });
+  const holidays=[
+    [35,"Hari Raya / Libur Bersama"],[82,"Libur LPK"],[133,"Kegiatan Internal LPK"],[176,"Hari Raya / Libur Bersama"],[219,"Libur LPK"],[287,"Kegiatan Internal LPK"]
+  ];
+  holidays.forEach(([off,note])=>{let d=add(start,off),x=parseISO(d);while(x.getDay()===0||x.getDay()===6){x.setDate(x.getDate()+1)}db.holidays[isoDate(x)]=note});
+  const weekdays=[];
+  for(let d=parseISO(start);d<=parseISO(end);d.setDate(d.getDate()+1)){const ds=isoDate(d),wd=d.getDay();if(wd!==0&&wd!==6&&!db.holidays[ds])weekdays.push(ds)}
+  const last7=weekdays.slice(-7),last6=weekdays.slice(-6),last5=weekdays.slice(-5);
+  const notesPool=[
+    "Aktif saat kaiwa dan berani mencoba pola kalimat baru.",
+    "Tugas kanji selesai dengan baik.",
+    "Hari ini perlu diingatkan untuk lebih fokus saat penjelasan.",
+    "Perkembangan kaiwa cukup baik.",
+    "Membantu teman yang kesulitan memahami materi.",
+    "Perlu lebih konsisten mengerjakan tugas.",
+    "Sikap di kelas baik dan mengikuti arahan Sensei."
+  ];
+  weekdays.forEach((date,di)=>{
+    const records={};
+    db.students.forEach((s,si)=>{
+      if(s.status==="Lulus SO"&&date>s.soDate)return;
+      let status="Hadir",time=`07:${String(18+((si*7+di*3)%27)).padStart(2,"0")}`,behavior="Baik",note="";
+      /* Exact final SP demo states: student 1 SP1, student 2 SP2, student 3 SP3. */
+      if(s.id==="stu_a_01"&&last5.includes(date)){status="Telat";time=`08:${String(4+last5.indexOf(date)*2).padStart(2,"0")}`}
+      else if(s.id==="stu_a_02"&&last6.includes(date)){status="Telat";time=`08:${String(7+last6.indexOf(date)*2).padStart(2,"0")}`}
+      else if(s.id==="stu_a_03"&&last7.includes(date)){status="Telat";time=`08:${String(9+last7.indexOf(date)*2).padStart(2,"0")}`}
+      else{
+        /* Every other active student has at most 0–4 lates over the year so SP1 is not accidental. */
+        const maxLate=si%5;
+        for(let k=0;k<maxLate;k++){const idx=(13+si*17+k*59)%weekdays.length;if(weekdays[idx]===date){status="Telat";time=`08:${String(2+((si+k*5)%23)).padStart(2,"0")}`;break}}
+        if(status==="Hadir"){
+          if((di+si*19)%157===0){status="Izin";time="";note="Izin keperluan keluarga."}
+          else if((di+si*29)%211===0){status="Sakit";time="";note="Sakit dan sudah memberi kabar kepada Sensei."}
+          else if((di+si*37)%307===0){status="Tanpa Keterangan";time="";note="Belum ada keterangan saat absensi."}
+        }
+      }
+      if((di*5+si*9)%173===0)behavior="Perlu Pembinaan";else if((di+si*11)%31===0)behavior="Cukup";
+      if(!note&&((di+si*13)%61===0))note=notesPool[(di+si)%notesPool.length];
+      records[s.id]={time,status,behavior,note};
+    });
+    db.attendance[date]={savedAt:`${date}T08:30:00.000Z`,records};
+    const conditions=["KBM berjalan lancar. Siswa mengikuti materi dengan baik.","Kelas kondusif dan latihan kaiwa berjalan aktif.","Materi tersampaikan sesuai target. Beberapa siswa memerlukan penguatan latihan.","Kegiatan belajar berjalan baik dan kedisiplinan kelas cukup terjaga."];
+    const suggestions=["Pertahankan konsistensi belajar dan kedisiplinan.","Lanjutkan pemantauan siswa yang memerlukan pembinaan.","Perlu penguatan latihan kaiwa pada pertemuan berikutnya.","Tidak ada saran khusus. KBM dapat dilanjutkan sesuai rencana."];
+    db.reports.push({id:`rep_${date.replace(/-/g,"")}`,date,condition:conditions[di%conditions.length],suggestion:suggestions[di%suggestions.length],text:"",updatedAt:`${date}T09:05:00.000Z`});
+  });
+  /* Additional agenda throughout the year with times. */
+  for(let m=0;m<12;m++){
+    const base=add(start,m*30+7),base2=add(start,m*30+18),base3=add(start,m*30+24);
+    db.agendas.push({id:`ag_${m}_a`,date:base,time:"13:00",title:["Mensetsu","Ujian Internal","Meeting Sensei","Simulasi SO"][m%4],note:"Agenda tambahan Sensei"});
+    db.agendas.push({id:`ag_${m}_b`,date:base2,time:"15:30",title:["Briefing Kedisiplinan","Latihan JLPT","Kegiatan LPK"][m%3],note:"Agenda simulasi KitaWorks"});
+    if(m%2===0)db.agendas.push({id:`ag_${m}_c`,date:base3,time:"12:30",title:"SO Datang",note:"Persiapan dan pendampingan siswa"});
+  }
+  db.demoSeed={version:41,createdAt:new Date().toISOString(),description:"30 siswa aktif + 8 Lulus SO + simulasi 1 tahun tanpa Horenso"};
 }
 
 /* seed before app is shown; new storage key prevents overwriting prior KitaWorks data */
