@@ -773,6 +773,54 @@ main{
 }
 </style>
 
+
+<style id="v42-attendance-layout">
+/* v42 — exact attendance card structure:
+   row 1: number | full name (gender)
+   row 2: arrival time | status | behavior
+   row 3: notes */
+#attendanceBody tr[data-sid]{
+  grid-template-columns:22px minmax(0,1fr)!important;
+  grid-template-areas:"num name" "fields fields" "note note"!important;
+}
+#attendanceBody .att-no{
+  width:20px!important;height:20px!important;font-size:9px!important;
+  background:rgba(242,174,191,.30)!important;color:#9d5362!important;
+}
+#attendanceBody .att-name{
+  min-width:0!important;display:flex!important;align-items:center!important;gap:6px!important;
+}
+#attendanceBody .att-name strong{
+  min-width:0!important;white-space:normal!important;overflow-wrap:anywhere!important;
+  font-weight:500!important;
+}
+#attendanceBody .att-fields{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1.15fr) minmax(0,1.15fr)!important;
+  gap:8px!important;width:100%!important;min-width:0!important;
+}
+#attendanceBody .att-field{min-width:0!important}
+#attendanceBody .att-field-label{
+  font-size:9px!important;white-space:nowrap!important;
+}
+#attendanceBody .time-display,
+#attendanceBody .choice-btn{
+  width:100%!important;min-width:0!important;
+}
+#attendanceBody .att-note{
+  width:100%!important;min-width:0!important;
+}
+#attendanceBody .att-note input{
+  width:100%!important;min-width:0!important;
+}
+@media(max-width:430px){
+  #attendanceBody tr[data-sid]{padding:11px 10px!important}
+  #attendanceBody .att-fields{gap:5px!important}
+  #attendanceBody .time-display,
+  #attendanceBody .choice-btn{padding:7px 5px!important;font-size:10px!important}
+}
+</style>
+
 </head>
 <body>
 
@@ -978,8 +1026,8 @@ main{
 
 <script>
 const APP_PASSWORD = "sensei";
-const STORE_KEY = "kitaworks_demo_v41";
-const SETTINGS_KEY = "kitaworks_settings_demo_v41";
+const STORE_KEY = "kitaworks_demo_v42";
+const SETTINGS_KEY = "kitaworks_settings_demo_v42";
 let db = loadDB();
 let settings = Object.assign({cutoff:"07:45", recovery:5}, JSON.parse(localStorage.getItem(SETTINGS_KEY)||"{}"));
 let calCursor = new Date();
@@ -2524,11 +2572,21 @@ function makeMonthlySheetXML(rows){
 
 /* More reliable logout: clear auth, then reload same page so login is always the first state. */
 function doLogout(){
-  sessionStorage.removeItem("kw_auth");kwAllowExit=true;dirty=false;
-  try{location.reload()}catch(_){
-    document.getElementById("app")?.classList.add("hidden");
-    document.getElementById("loginScreen")?.classList.remove("hidden");
-  }
+  sessionStorage.removeItem("kw_auth");
+  kwAllowExit=true;
+  dirty=false;
+  closeModal();
+  toggleSidebar(false);
+  const app=document.getElementById("app");
+  const login=document.getElementById("loginScreen");
+  const pass=document.getElementById("passwordInput");
+  const msg=document.getElementById("loginMsg");
+  if(app) app.classList.add("hidden");
+  if(login) login.classList.remove("hidden");
+  if(pass){ pass.value=""; pass.type="password"; }
+  if(msg) msg.textContent="";
+  window.scrollTo({top:0,left:0,behavior:"auto"});
+  try{ history.replaceState({kwLogin:true},"",location.href); }catch(_){}
 }
 function requestLogout(){
   toggleSidebar(false);
@@ -2605,7 +2663,7 @@ function seedSimulationIfNeeded(){
     db.agendas.push({id:`ag_${m}_b`,date:base2,time:"15:30",title:["Briefing Kedisiplinan","Latihan JLPT","Kegiatan LPK"][m%3],note:"Agenda simulasi KitaWorks"});
     if(m%2===0)db.agendas.push({id:`ag_${m}_c`,date:base3,time:"12:30",title:"SO Datang",note:"Persiapan dan pendampingan siswa"});
   }
-  db.demoSeed={version:41,createdAt:new Date().toISOString(),description:"30 siswa aktif + 8 Lulus SO + simulasi 1 tahun tanpa Horenso"};
+  db.demoSeed={version:42,createdAt:new Date().toISOString(),description:"30 siswa aktif + 8 Lulus SO + simulasi 1 tahun penuh tanpa Horenso"};
 }
 
 /* seed before app is shown; new storage key prevents overwriting prior KitaWorks data */
