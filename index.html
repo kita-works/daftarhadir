@@ -1001,7 +1001,7 @@ body.kw-modal-open #modalRoot{pointer-events:auto!important}
     <div class="side-footer">
       <strong>KitaWorks</strong><br>
       LPK Kitamura Mirai Indonesia<br>
-      v1.2.0 • Simulasi 1 Tahun
+      Sinkronisasi Spreadsheet
     </div>
   </aside>
   <div id="overlay" class="overlay hidden" onclick="toggleSidebar(false)"></div>
@@ -1143,8 +1143,8 @@ body.kw-modal-open #modalRoot{pointer-events:auto!important}
 
 <script>
 const APP_PASSWORD = "sensei";
-const STORE_KEY = "kitaworks_demo_v44";
-const SETTINGS_KEY = "kitaworks_settings_demo_v44";
+const STORE_KEY = "kitaworks_demo_v46";
+const SETTINGS_KEY = "kitaworks_settings_demo_v46";
 let db = loadDB();
 let settings = Object.assign({cutoff:"07:45", recovery:5}, JSON.parse(localStorage.getItem(SETTINGS_KEY)||"{}"));
 let calCursor = new Date();
@@ -2784,7 +2784,7 @@ function seedSimulationIfNeeded(){
 }
 
 /* seed before app is shown; new storage key prevents overwriting prior KitaWorks data */
-seedSimulationIfNeeded();
+/* v46: tidak ada data simulasi. Data siswa berasal dari Spreadsheet. */
 recalcSP();
 saveDB();
 
@@ -3085,6 +3085,1003 @@ ${suggestion||"-"}`;
       if(sb){sb.style.display="none";settingsCard.querySelectorAll("input").forEach(f=>["input","change"].forEach(ev=>f.addEventListener(ev,()=>sb.style.display="")))}
     }
   });
+})();
+</script>
+
+
+<style id="kw-v45-style">
+:root{--kw-top:42px}
+body.kw-modal-open{overflow:hidden;touch-action:none}
+.topbar{height:42px!important;min-height:42px!important;padding:0 10px!important;gap:8px!important;position:fixed!important;left:0;right:0;top:0;z-index:80!important}
+.hamb{width:32px!important;height:32px!important;font-size:20px!important;border-radius:8px!important}
+.topbar img{width:28px!important;height:28px!important}
+.top-title{font-size:14px!important;font-weight:700!important}
+.top-sensei{font-size:12px!important;font-weight:600!important}
+.sidebar{top:42px!important}
+main,.main{padding-top:42px}
+.page-title{position:sticky!important;top:42px!important;z-index:24!important;background:rgba(247,247,248,.96)!important;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:6px 0!important;margin:0 0 8px!important;min-height:34px!important}
+.page-title h2{font-size:16px!important;line-height:1.2!important;margin:0!important;font-weight:700!important}
+#kwSyncBtn{width:30px;height:30px;border:0;border-radius:9px;background:rgba(255,255,255,.14);color:#fff;display:grid;place-items:center;padding:6px}
+#kwSyncBtn svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#kwSyncBtn.syncing svg{animation:kwSpin .8s linear infinite}
+#kwSyncBtn.ok{background:rgba(255,255,255,.25)}
+#kwSyncBtn.error{background:rgba(82,0,0,.34)}
+@keyframes kwSpin{to{transform:rotate(360deg)}}
+#kwVersionLabel{position:fixed;right:8px;bottom:6px;z-index:120;font-size:9px;color:#6b7280;opacity:.68;background:rgba(255,255,255,.76);
+  padding:3px 6px;border-radius:7px;pointer-events:none;backdrop-filter:blur(6px)}
+/* equal dashboard panels */
+#page-home .grid-2{align-items:stretch}
+#page-home .grid-2>.card{height:100%;min-height:260px;display:flex;flex-direction:column}
+#todayAgenda,#attentionList{overflow:auto;min-height:0;flex:1}
+@media(min-width:760px){#page-home .grid-2{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}}
+/* attendance */
+#page-attendance .table-wrap{max-width:100%;overflow-x:auto!important;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+#page-attendance .attendance-table{width:100%;min-width:720px;table-layout:fixed}
+#page-attendance .attendance-table th:nth-child(1){width:48px}
+#page-attendance .attendance-table th:nth-child(2){width:26%}
+#page-attendance .attendance-table th:nth-child(3){width:138px}
+#page-attendance .attendance-table th:nth-child(4),
+#page-attendance .attendance-table th:nth-child(5){width:72px;text-align:center}
+#page-attendance .attendance-table th:nth-child(6){width:auto}
+#page-attendance .attendance-table td{vertical-align:middle;padding:7px 8px}
+#page-attendance .attendance-table input.kw-note{width:100%;min-width:180px;border:1px solid #d7dbe0;border-radius:9px;padding:8px 9px;background:#fff}
+.kw-gender-text{font-size:12px;color:#4b5563;white-space:nowrap}
+.kw-check-v45{width:28px;height:28px;border-radius:8px;border:1.5px solid #c8cbd0;background:rgba(255,255,255,.9);display:grid;place-items:center;margin:auto;padding:0;transition:.16s}
+.kw-check-v45 svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2.5;opacity:0}
+.kw-check-v45.on{background:var(--maroon);border-color:var(--maroon);box-shadow:0 4px 12px rgba(179,41,50,.2)}
+.kw-check-v45.on svg{opacity:1}
+#saveAttendanceBtn.kw-hidden-save{display:none!important}
+@media(max-width:680px) and (orientation:portrait){
+  body{overflow-x:hidden}
+  #page-attendance .attendance-table{min-width:760px;font-size:13px}
+}
+@media(max-height:540px) and (orientation:landscape){
+  #page-attendance .attendance-table{min-width:0!important;font-size:11px}
+  #page-attendance .attendance-table th,#page-attendance .attendance-table td{padding:5px 4px}
+  #page-attendance .attendance-table input.kw-note{min-width:0;font-size:11px;padding:6px}
+}
+/* students */
+#page-students .table-wrap{max-width:100%;overflow-x:auto!important}
+.student-table{min-width:720px!important;table-layout:fixed!important}
+.student-table th:nth-child(1){width:92px!important}.student-table th:nth-child(2){width:24%!important}
+.student-table th:nth-child(3){width:116px!important}.student-table th:nth-child(4){width:112px!important}
+.student-table th:nth-child(5){width:94px!important}.student-table th:nth-child(6){width:72px!important}.student-table th:nth-child(7){width:74px!important}
+.kw-action-wrap{position:relative;display:inline-block}
+.kw-action-btn{width:34px;height:30px;border:1px solid #d8dadd;background:#fff;border-radius:9px;display:grid;place-items:center}
+.kw-action-menu{position:absolute;right:0;top:36px;min-width:170px;background:rgba(255,255,255,.98);border:1px solid #e1e3e7;border-radius:12px;
+ box-shadow:0 12px 34px rgba(0,0,0,.14);padding:6px;z-index:45}
+.kw-action-menu button{width:100%;border:0;background:transparent;text-align:left;padding:9px 10px;border-radius:8px;font-size:12px}
+.kw-action-menu button:hover{background:#f5f5f6}.kw-action-menu .danger{color:#a61e28}
+.kw-sync-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.kw-sync-stat{background:#f6f6f7;border:1px solid #e6e7e9;border-radius:10px;padding:9px;font-size:12px}
+.kw-sync-stat strong{display:block;font-size:13px}
+.kw-settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:680px){.kw-settings-grid{grid-template-columns:1fr}.student-table{min-width:700px!important}}
+.modal-backdrop{z-index:110!important}
+.modal-backdrop.locked{cursor:default}
+.kw-success{max-width:390px;text-align:center}
+.kw-success-icon{width:44px;height:44px;margin:0 auto 10px;border-radius:50%;background:#eaf7ef;display:grid;place-items:center;font-size:22px}
+</style>
+
+<script id="kw-v45-script">
+(function(){
+  const KW_VERSION="KitaWorks_v45_Google_Spreadsheet_Sync.html";
+  const KW_SYNC_KEY="kitaworks_sync_v45";
+  const KW_DEFAULT_TOKEN="KW-Kitamura-2024";
+  const KW_DEFAULT_URL="";
+  const tickSvg='<svg viewBox="0 0 24 24"><path d="m5 12 4 4 10-10"/></svg>';
+
+  function syncCfg(){
+    let x={};try{x=JSON.parse(localStorage.getItem(KW_SYNC_KEY)||"{}")}catch(_){}
+    return Object.assign({url:KW_DEFAULT_URL,token:KW_DEFAULT_TOKEN,lastSync:"",lastCount:0,lastStatus:"Belum disinkronkan"},x);
+  }
+  function saveSyncCfg(x){localStorage.setItem(KW_SYNC_KEY,JSON.stringify(x))}
+  function normalizeUrl(u){return String(u||"").trim().replace(/\?.*$/,"").replace(/\/+$/,"")}
+  function apiUrl(action){
+    const c=syncCfg(),base=normalizeUrl(c.url);
+    if(!base)throw new Error("URL Web App belum diatur.");
+    return `${base}?action=${encodeURIComponent(action)}&token=${encodeURIComponent(c.token||"")}`;
+  }
+  function setSyncState(state,title){
+    const b=document.getElementById("kwSyncBtn");if(!b)return;
+    b.classList.remove("syncing","ok","error");if(state)b.classList.add(state);
+    b.title=title||"Sinkronisasi Google Spreadsheet";
+  }
+  window.showModal=function(content,extraClass=""){
+    document.body.classList.add("kw-modal-open");
+    const locked=String(extraClass).split(/\s+/).includes("locked");
+    document.getElementById("modalRoot").innerHTML=
+      `<div class="modal-backdrop ${locked?"locked":""}" ${locked?"":'onclick="if(event.target===this)closeModal()"'}><div class="modal ${extraClass}">${content}</div></div>`;
+  };
+  window.closeModal=function(){
+    const r=document.getElementById("modalRoot");if(r)r.innerHTML="";
+    document.body.classList.remove("kw-modal-open");
+  };
+  window.showSuccess=function(message){
+    showModal(`<div class="kw-success"><div class="kw-success-icon">✓</div><h3>Berhasil</h3><p>${esc(message)}</p>
+      <div class="modal-actions" style="justify-content:center"><button class="btn btn-primary" onclick="closeModal()">Tutup</button></div></div>`);
+  };
+
+  function installChrome(){
+    if(!document.getElementById("kwVersionLabel")){
+      const v=document.createElement("div");v.id="kwVersionLabel";v.textContent=KW_VERSION;document.body.appendChild(v);
+    }
+    const top=document.querySelector(".topbar");
+    if(top&&!document.getElementById("kwSyncBtn")){
+      const spacer=top.querySelector(".top-spacer");
+      const b=document.createElement("button");b.id="kwSyncBtn";b.type="button";b.title="Sinkronisasi Google Spreadsheet";
+      b.innerHTML='<svg viewBox="0 0 24 24"><path d="M20 6v5h-5"/><path d="M4 18v-5h5"/><path d="M6.1 9A7 7 0 0 1 18 6l2 5M4 13l2 5a7 7 0 0 0 11.9-3"/></svg>';
+      b.onclick=()=>manualSync(); top.insertBefore(b,spacer?spacer.nextSibling:top.lastChild);
+    }
+    const settingsNav=document.querySelector('[data-page="settings"]');
+    if(settingsNav){settingsNav.setAttribute("onclick","openSettingsPopup();return false;")}
+  }
+
+  function setAttendanceHead(){
+    const h=document.querySelector("#page-attendance .attendance-table thead tr");
+    if(h)h.innerHTML="<th>No</th><th>Nama</th><th>Jenis Kelamin</th><th>Hadir</th><th>Telat</th><th>Catatan Tambahan</th>";
+    const quick=[...document.querySelectorAll('#page-attendance .toolbar button')].find(b=>/Centang Semua|Batalkan Semua/i.test(b.textContent||""));
+    if(quick){quick.id="toggleAllPresentBtn";quick.setAttribute("onclick","setAllPresent()");}
+  }
+  function check(on,kind){
+    return `<button type="button" class="kw-check-v45 ${on?"on":""}" data-kind="${kind}" onclick="toggleAttendanceCheck(this)">${tickSvg}</button>`;
+  }
+  function updateAllPresentButton(){
+    const btn=document.getElementById("toggleAllPresentBtn");if(!btn)return;
+    const checks=[...document.querySelectorAll('#attendanceBody [data-kind="present"]')];
+    const all=checks.length>0&&checks.every(x=>x.classList.contains("on"));
+    btn.textContent=all?"Batalkan Semua Hadir":"✓ Centang Semua Hadir";
+  }
+  window.loadAttendanceForm=function(){
+    setAttendanceHead();
+    const date=document.getElementById("attendanceDate")?.value;if(!date)return;
+    const hol=db.holidays[date],normal=document.getElementById("attendanceNormal"),hm=document.getElementById("attendanceHolidayMode");
+    if(hol){
+      normal.classList.add("hidden");hm.classList.remove("hidden");
+      hm.innerHTML=`<div class="holiday-lock-card"><h3>Hari Libur</h3><p>${esc(hol)}</p>
+        <button class="btn holiday-work-btn" onclick="markWorkingDay()">Tandai Hari Kerja</button></div>`;
+      dirty=false;updateSaveButton();return;
+    }
+    normal.classList.remove("hidden");hm.classList.add("hidden");hm.innerHTML="";
+    const day=db.attendance[date]||{records:{}};
+    const active=db.students.filter(s=>s.status==="Belajar").sort((a,b)=>(a.name||"").localeCompare(b.name||""));
+    const body=document.getElementById("attendanceBody");
+    body.innerHTML=active.map((s,i)=>{
+      const r=day.records?.[s.id]||{},present=r.status==="Hadir"||r.status==="Telat",late=r.status==="Telat";
+      return `<tr data-sid="${s.id}" data-prev-status="${esc(r.status||"")}" data-prev-time="${esc(r.time||"")}" data-behavior="${esc(r.behavior||"Baik")}">
+        <td>${i+1}</td><td><strong>${esc(s.name)}</strong></td><td><span class="kw-gender-text">${esc(s.gender||"-")}</span></td>
+        <td>${check(present,"present")}</td><td>${check(late,"late")}</td>
+        <td><input class="kw-note" value="${esc(r.note||"")}" placeholder="${late?"Tulis jam/alasan telat bila perlu":"Catatan opsional"}" oninput="markDirty();updateAllPresentButton()"></td>
+      </tr>`;
+    }).join("")||'<tr><td colspan="6"><div class="empty">Belum ada siswa aktif.</div></td></tr>';
+    dirty=false;updateSaveButton();updateAllPresentButton();
+  };
+  window.toggleAttendanceCheck=function(btn){
+    const tr=btn.closest("tr"),kind=btn.dataset.kind;
+    if(kind==="present"){
+      const on=!btn.classList.contains("on");btn.classList.toggle("on",on);
+      if(!on)tr.querySelector('[data-kind="late"]')?.classList.remove("on");
+    }else{
+      const on=!btn.classList.contains("on");btn.classList.toggle("on",on);
+      if(on)tr.querySelector('[data-kind="present"]')?.classList.add("on");
+    }
+    const late=tr.querySelector('[data-kind="late"]')?.classList.contains("on");
+    const note=tr.querySelector(".kw-note");if(note)note.placeholder=late?"Tulis jam/alasan telat bila perlu":"Catatan opsional";
+    markDirty();updateAllPresentButton();
+  };
+  window.setAllPresent=function(){
+    const rows=[...document.querySelectorAll("#attendanceBody tr[data-sid]")];
+    const all=rows.length>0&&rows.every(tr=>tr.querySelector('[data-kind="present"]')?.classList.contains("on"));
+    rows.forEach(tr=>{
+      tr.querySelector('[data-kind="present"]')?.classList.toggle("on",!all);
+      if(all)tr.querySelector('[data-kind="late"]')?.classList.remove("on");
+    });
+    markDirty();updateAllPresentButton();
+  };
+  window.collectAttendance=function(){
+    const records={};
+    document.querySelectorAll("#attendanceBody tr[data-sid]").forEach(tr=>{
+      const present=tr.querySelector('[data-kind="present"]')?.classList.contains("on");
+      const late=tr.querySelector('[data-kind="late"]')?.classList.contains("on");
+      const prev=tr.dataset.prevStatus||"";
+      let status=present?(late?"Telat":"Hadir"):(["Izin","Sakit","Tanpa Keterangan"].includes(prev)?prev:"Tanpa Keterangan");
+      records[tr.dataset.sid]={
+        status,
+        time:late?(tr.dataset.prevTime||""):(present?"":""),
+        behavior:tr.dataset.behavior||"Baik",
+        note:tr.querySelector(".kw-note")?.value.trim()||""
+      };
+    });
+    return records;
+  };
+  window.saveAttendance=function(){
+    const date=document.getElementById("attendanceDate")?.value;if(!date||db.holidays[date])return;
+    db.attendance[date]={savedAt:new Date().toISOString(),records:collectAttendance()};
+    recalcSP();dirty=false;localStorage.setItem(STORE_KEY,JSON.stringify(db));
+    updateSaveButton();renderHome();renderCalendar();renderSP();renderReports();showSuccess("Absensi berhasil disimpan.");
+  };
+  window.updateSaveButton=function(){
+    const b=document.getElementById("saveAttendanceBtn");if(!b)return;
+    b.disabled=false;b.textContent="Simpan Absensi";b.classList.toggle("kw-hidden-save",!dirty);
+  };
+
+  /* Student table actions */
+  window.renderStudents=function(){
+    const el=document.getElementById("studentsBody");if(!el)return;
+    const q=(document.getElementById("studentSearch")?.value||"").toLowerCase();
+    const arr=[...db.students].filter(s=>(`${s.nis} ${s.name}`).toLowerCase().includes(q))
+      .sort((a,b)=>(a.status==="Belajar"?0:1)-(b.status==="Belajar"?0:1)||(a.name||"").localeCompare(b.name||""));
+    el.innerHTML=arr.length?arr.map(s=>`<tr style="${s.status==="Lulus SO"?"opacity:.58":""}">
+      <td>${esc(s.nis)}</td><td><strong>${esc(s.name)}</strong>${s.status==="Lulus SO"?`<div class="muted" style="font-size:10px">${esc(s.soDate||"-")} · ${esc(s.soName||"-")} · ${esc(s.kaisha||"-")}</div>`:""}</td>
+      <td>${esc(s.gender||"-")}</td><td>${esc(s.start||"-")}</td><td><span class="status-pill ${s.status==="Lulus SO"?"s-lulus":"s-hadir"}">${esc(s.status||"Belajar")}</span></td>
+      <td>${s.spLevel?`SP${s.spLevel}`:"-"}</td>
+      <td><div class="kw-action-wrap"><button class="kw-action-btn" onclick="toggleStudentMenu(event,'${s.id}')">▾</button>
+        <div id="kwMenu_${s.id}" class="kw-action-menu hidden">
+          <button onclick="openStudentModal('${s.id}')">Edit Siswa</button>
+          <button onclick="openStudentDetail('${s.id}')">Lihat Riwayat</button>
+          <button class="danger" onclick="confirmDeleteStudent('${s.id}')">Hapus Siswa</button>
+        </div></div></td></tr>`).join(""):'<tr><td colspan="7"><div class="empty">Belum ada data siswa.</div></td></tr>';
+  };
+  window.toggleStudentMenu=function(ev,id){
+    ev.stopPropagation();document.querySelectorAll(".kw-action-menu").forEach(x=>{if(x.id!==`kwMenu_${id}`)x.classList.add("hidden")});
+    document.getElementById(`kwMenu_${id}`)?.classList.toggle("hidden");
+  };
+  document.addEventListener("click",()=>document.querySelectorAll(".kw-action-menu").forEach(x=>x.classList.add("hidden")));
+  window.confirmDeleteStudent=function(id){
+    const s=db.students.find(x=>x.id===id);if(!s)return;
+    showModal(`<h3>Hapus Siswa?</h3><p><strong>${esc(s.name)}</strong> (${esc(s.nis)}) akan dihapus dari data lokal KitaWorks.</p>
+      <p class="muted">Tindakan ini tidak menghapus baris siswa dari Google Spreadsheet.</p>
+      <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Batal</button><button class="btn btn-danger" onclick="deleteStudentV45('${id}')">Hapus Siswa</button></div>`,"locked");
+  };
+  window.deleteStudentV45=function(id){
+    db.students=db.students.filter(s=>s.id!==id);saveDB();closeModal();showSuccess("Data siswa berhasil dihapus.");
+  };
+
+  function dateButton(id,value,label){
+    return `<input id="${id}" type="hidden" value="${esc(value||"")}"><button type="button" class="date-display" style="width:100%" onclick="openDatePicker(document.getElementById('${id}').value||isoDate(new Date()),d=>{document.getElementById('${id}').value=d;document.getElementById('${id}Text').textContent=displayDateShort(d);markStudentFormDirty()},'${label}','Pilih')"><span id="${id}Text">${value?displayDateShort(value):"Pilih tanggal"}</span></button>`;
+  }
+  window.openStudentModal=function(id=null){
+    const s=id?db.students.find(x=>x.id===id):null;
+    window.__editingStudentId=id||"";window.__editingOldStatus=s?.status||"";
+    showModal(`<h3>${s?"Edit":"Tambah"} Siswa</h3><div class="form-grid">
+      <div class="field"><label>Nomor Induk</label><input id="stNis" value="${esc(s?.nis||"")}" oninput="formatNIS(this);markStudentFormDirty()"></div>
+      <div class="field"><label>Nama</label><input id="stName" value="${esc(s?.name||"")}" oninput="formatStudentName(this);markStudentFormDirty()"></div>
+      <div class="field"><label>Jenis Kelamin</label><select id="stGender" onchange="markStudentFormDirty()"><option ${s?.gender==="Laki-laki"?"selected":""}>Laki-laki</option><option ${s?.gender==="Perempuan"?"selected":""}>Perempuan</option></select></div>
+      <div class="field"><label>Tanggal Awal Belajar</label>${dateButton("stStart",s?.start||"","Tanggal Awal Belajar")}</div>
+      <div class="field"><label>Status</label><select id="stStatus" onchange="markStudentFormDirty()"><option ${s?.status!=="Lulus SO"?"selected":""}>Belajar</option><option ${s?.status==="Lulus SO"?"selected":""}>Lulus SO</option></select></div>
+    </div><div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Batal</button>
+      <button id="studentSaveBtn" class="btn btn-primary" style="display:none" onclick="saveStudentV45()">Simpan</button></div>`);
+  };
+  window.markStudentFormDirty=function(){const b=document.getElementById("studentSaveBtn");if(b)b.style.display=""};
+  function studentBaseFromForm(){
+    const nis=document.getElementById("stNis")?.value.trim().toUpperCase()||"",name=titleCaseName(document.getElementById("stName")?.value.trim()||"");
+    if(!nis||!name){alert("NIS dan nama wajib diisi.");return null}
+    const id=window.__editingStudentId||"";
+    if(db.students.some(x=>x.nis===nis&&x.id!==id)){alert("Nomor Induk sudah digunakan.");return null}
+    return {id:id||crypto.randomUUID(),nis,name,gender:document.getElementById("stGender").value,start:document.getElementById("stStart").value,status:document.getElementById("stStatus").value};
+  }
+  window.saveStudentV45=function(){
+    const base=studentBaseFromForm();if(!base)return;
+    if(base.status==="Lulus SO"&&window.__editingOldStatus!=="Lulus SO"){
+      window.__pendingStudent=base;
+      showModal(`<h3>Lengkapi Data Lulus SO</h3><p class="muted">${esc(base.name)}</p><div class="form-grid">
+        <div class="field"><label>Tanggal Lulus SO</label>${dateButton("soDateV45","","Tanggal Lulus SO")}</div>
+        <div class="field"><label>SO</label><input id="soNameV45"></div><div class="field"><label>Kaisha</label><input id="kaishaV45"></div>
+        <div class="field"><label>Kumiai</label><input id="kumiaiV45"></div><div class="field"><label>Job</label><input id="jobV45"></div>
+      </div><div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Batal</button>
+        <button class="btn btn-primary" onclick="finishLulusSO()">Simpan Status Lulus SO</button></div>`);return;
+    }
+    const old=base.id?db.students.find(x=>x.id===base.id):null;
+    const obj=Object.assign({spLevel:0,spProgress:0,spHistory:[]},old||{},base);
+    if(old)Object.assign(old,obj);else db.students.push(obj);
+    localStorage.setItem(STORE_KEY,JSON.stringify(db));closeModal();refreshAll();
+    pushStudentToSheet(obj).catch(()=>{});
+    showSuccess("Data siswa berhasil diperbarui.");
+  };
+  window.finishLulusSO=function(){
+    const b=window.__pendingStudent;if(!b)return;
+    const vals={soDate:document.getElementById("soDateV45")?.value||"",soName:document.getElementById("soNameV45")?.value.trim()||"",
+      kaisha:document.getElementById("kaishaV45")?.value.trim()||"",kumiai:document.getElementById("kumiaiV45")?.value.trim()||"",job:document.getElementById("jobV45")?.value.trim()||""};
+    if(Object.values(vals).some(v=>!v))return alert("Semua data Lulus SO wajib diisi.");
+    const old=db.students.find(x=>x.id===b.id),obj=Object.assign({spLevel:0,spProgress:0,spHistory:[]},old||{},b,vals);
+    if(old)Object.assign(old,obj);else db.students.push(obj);
+    localStorage.setItem(STORE_KEY,JSON.stringify(db));window.__pendingStudent=null;closeModal();refreshAll();pushStudentToSheet(obj).catch(()=>{});
+    showSuccess("Status siswa berhasil diubah menjadi Lulus SO.");
+  };
+
+  /* Spreadsheet sync */
+  function mapRemoteStudent(r){
+    return {
+      nis:String(r.nis||"").trim(),name:String(r.name||"").trim(),gender:String(r.gender||"").trim()||"Laki-laki",
+      start:String(r.startDate||"").trim(),status:String(r.status||"").trim()||"Belajar",
+      soDate:String(r.graduationDate||"").trim(),soName:String(r.so||"").trim(),kaisha:String(r.kaisha||"").trim(),
+      kumiai:String(r.kumiai||"").trim(),job:String(r.job||"").trim(),birthPlace:r.birthPlace||"",birthDate:r.birthDate||"",
+      whatsapp:r.whatsapp||"",address:r.address||"",province:r.province||"",city:r.city||"",photo:r.photo||""
+    };
+  }
+  async function fetchStudents(){
+    const res=await fetch(apiUrl("students"),{method:"GET",cache:"no-store"});
+    const data=await res.json();if(!data.success)throw new Error(data.message||"Sinkronisasi gagal.");return data;
+  }
+  function mergeRemote(students){
+    const remote=(students||[]).map(mapRemoteStudent).filter(x=>x.nis);
+    const seen=new Set();
+    remote.forEach(s=>{
+      const key=String(s.nis||"").trim().toUpperCase();
+      if(seen.has(key))throw new Error("Nomor Induk ganda di Spreadsheet: "+s.nis);
+      seen.add(key);
+    });
+
+    const old=[...(db.students||[])];
+    const used=new Set();
+    const norm=v=>String(v||"").trim().toLowerCase();
+    const findMatch=m=>{
+      let s=old.find(x=>!used.has(x.id)&&norm(x.nis)===norm(m.nis));
+      if(s)return s;
+      s=old.find(x=>!used.has(x.id)&&norm(x.name)===norm(m.name)&&m.birthDate&&norm(x.birthDate)===norm(m.birthDate));
+      if(s)return s;
+      s=old.find(x=>!used.has(x.id)&&norm(x.name)===norm(m.name)&&m.whatsapp&&norm(x.whatsapp)===norm(m.whatsapp));
+      if(s)return s;
+      return null;
+    };
+
+    const next=remote.map(m=>{
+      const oldStudent=findMatch(m);
+      if(oldStudent){
+        used.add(oldStudent.id);
+        Object.assign(oldStudent,m);
+        return oldStudent;
+      }
+      return Object.assign({
+        id:crypto.randomUUID(),spLevel:0,spProgress:0,spLateCount:0,
+        spHistory:[],sp3Deactivations:[]
+      },m);
+    });
+
+    /* Spreadsheet adalah source of truth untuk daftar/profil siswa. */
+    db.students=next;
+    localStorage.setItem(STORE_KEY,JSON.stringify(db));
+    recalcSP();
+    localStorage.setItem(STORE_KEY,JSON.stringify(db));
+    refreshAll();
+    return next.length;
+  }
+  window.pushStudentToSheet=async function(s){
+    const c=syncCfg();if(!normalizeUrl(c.url))return;
+    const payload={nis:s.nis,name:s.name,gender:s.gender,startDate:s.start||"",status:s.status||"Belajar",
+      graduationDate:s.soDate||"",so:s.soName||"",kaisha:s.kaisha||"",kumiai:s.kumiai||"",job:s.job||""};
+    const body=new URLSearchParams({action:"upsertStudent",token:c.token||"",payload:JSON.stringify(payload)});
+    const res=await fetch(normalizeUrl(c.url),{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},body});
+    const data=await res.json();if(!data.success)throw new Error(data.message||"Gagal memperbarui Spreadsheet.");return data;
+  };
+  window.manualSync=async function(silent=false){
+    const c=syncCfg();
+    if(!normalizeUrl(c.url)){setSyncState("error","URL Web App belum diatur");if(!silent)openSettingsPopup();return}
+    try{
+      setSyncState("syncing","Sedang sinkronisasi…");
+      const data=await fetchStudents(),count=mergeRemote(data.students||[]);
+      c.lastSync=new Date().toISOString();c.lastCount=data.count??count;c.lastStatus="Berhasil";saveSyncCfg(c);
+      setSyncState("ok",`Sinkron terakhir: ${new Date(c.lastSync).toLocaleString("id-ID")}`);
+      if(!silent)showSuccess(`Sinkronisasi berhasil • ${c.lastCount} data siswa diperbarui.`);
+    }catch(e){
+      c.lastStatus="Gagal: "+e.message;saveSyncCfg(c);setSyncState("error",c.lastStatus);
+      if(!silent)showModal(`<h3>Sinkronisasi Gagal</h3><p>${esc(e.message)}</p><div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Tutup</button><button class="btn btn-primary" onclick="closeModal();openSettingsPopup()">Buka Pengaturan</button></div>`);
+    }
+  };
+  window.testSyncConnection=async function(){
+    const url=normalizeUrl(document.getElementById("syncUrl")?.value),token=document.getElementById("syncToken")?.value.trim()||"";
+    if(!url)return alert("Masukkan URL Web App /exec.");
+    try{
+      const res=await fetch(`${url}?action=ping&token=${encodeURIComponent(token)}`,{cache:"no-store"}),data=await res.json();
+      if(!data.success)throw new Error(data.message||"Koneksi gagal.");
+      showSuccess(`Koneksi berhasil • ${data.sheet||"Form Responses 4"}${data.build?" • "+data.build:""}`);
+    }catch(e){showModal(`<h3>Koneksi Gagal</h3><p>${esc(e.message)}</p><div class="modal-actions"><button class="btn btn-primary" onclick="closeModal()">Tutup</button></div>`)}
+  };
+  window.saveSyncSettings=function(){
+    const c=syncCfg();c.url=normalizeUrl(document.getElementById("syncUrl")?.value);c.token=document.getElementById("syncToken")?.value.trim()||"";
+    saveSyncCfg(c);closeModal();setSyncState("", "Sinkronisasi Google Spreadsheet");showSuccess("Pengaturan sinkronisasi berhasil diperbarui.");
+  };
+  window.markSyncSettingsDirty=function(){const b=document.getElementById("saveSyncSettingsBtn");if(b)b.style.display=""};
+  window.openSettingsPopup=function(){
+    toggleSidebar(false);const c=syncCfg();
+    const last=c.lastSync?new Date(c.lastSync).toLocaleString("id-ID"):"Belum pernah";
+    showModal(`<h3>Pengaturan</h3><div class="kw-settings-grid">
+      <div><h4>Google Spreadsheet Sync</h4>
+        <div class="field"><label>Apps Script Web App URL</label><input id="syncUrl" value="${esc(c.url)}" placeholder="https://script.google.com/macros/s/.../exec" oninput="markSyncSettingsDirty()"></div>
+        <div class="field"><label>Sync Token</label><input id="syncToken" value="${esc(c.token)}" oninput="markSyncSettingsDirty()"></div>
+        <div class="toolbar"><button class="btn btn-outline" onclick="testSyncConnection()">Test Connection</button><button class="btn btn-outline" onclick="manualSync()">Sync Now</button></div>
+        <div class="kw-sync-meta"><div class="kw-sync-stat"><span>Terakhir sync</span><strong>${esc(last)}</strong></div>
+          <div class="kw-sync-stat"><span>Jumlah siswa</span><strong>${Number(c.lastCount||0)}</strong></div>
+          <div class="kw-sync-stat" style="grid-column:1/-1"><span>Status</span><strong>${esc(c.lastStatus||"-")}</strong></div></div>
+      </div>
+      <div><h4>Aturan Kehadiran</h4>
+        <div class="field"><label>Batas hadir tepat waktu</label><input id="popupCutoff" value="${esc(settings.cutoff||"07:45")}" readonly></div>
+        <div class="field"><label>Target pemulihan SP</label><input id="popupRecovery" type="number" min="1" value="${Number(settings.recovery||5)}" oninput="markSyncSettingsDirty()"></div>
+        <p class="muted">Data operasional tetap tersimpan lokal di browser. Profil siswa disinkronkan berdasarkan NIS.</p>
+      </div>
+    </div><div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Tutup</button>
+      <button id="saveSyncSettingsBtn" class="btn btn-primary" style="display:none" onclick="saveAllSettingsV45()">Simpan Pengaturan</button></div>`);
+  };
+  window.saveAllSettingsV45=function(){
+    const c=syncCfg();c.url=normalizeUrl(document.getElementById("syncUrl")?.value);c.token=document.getElementById("syncToken")?.value.trim()||"";
+    settings.recovery=Math.max(1,Number(document.getElementById("popupRecovery")?.value)||5);
+    saveSyncCfg(c);localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));recalcSP();localStorage.setItem(STORE_KEY,JSON.stringify(db));closeModal();refreshAll();
+    showSuccess("Pengaturan berhasil diperbarui.");
+  };
+
+  /* Important confirmation/success overrides */
+  window.requestLogout=function(){
+    toggleSidebar(false);
+    if(dirty){showModal(`<h3>Absensi belum disimpan</h3><p class="muted">Simpan perubahan absensi sebelum logout.</p><div class="modal-actions"><button class="btn btn-primary" onclick="closeModal()">Kembali</button></div>`,"locked");return}
+    showModal(`<h3>Logout dari KitaWorks?</h3><p class="muted">Data yang sudah tersimpan tetap aman di perangkat ini.</p><div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Batal</button><button class="btn btn-primary" onclick="doLogout()">Logout</button></div>`,"locked");
+  };
+  window.openSP3=function(id){
+    const s=db.students.find(x=>x.id===id);if(!s||s.spLevel!==3)return;
+    showModal(`<h3>Nonaktifkan SP3</h3><p><strong>${esc(s.name)}</strong></p><p class="muted">Masukkan alasan dari Atasan.</p>
+      <div class="field"><label>Alasan Atasan</label><textarea id="sp3DisableReason"></textarea></div><div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Batal</button><button class="btn btn-primary" onclick="deactivateSP3V45('${id}')">Nonaktifkan SP3</button></div>`,"locked");
+  };
+  window.deactivateSP3V45=function(id){
+    const s=db.students.find(x=>x.id===id),reason=document.getElementById("sp3DisableReason")?.value.trim()||"";
+    if(!s||!reason)return alert("Alasan dari Atasan wajib diisi.");
+    s.sp3Deactivations=s.sp3Deactivations||[];s.sp3Deactivations.push({date:isoDate(new Date()),reason,at:new Date().toISOString()});
+    recalcSP();localStorage.setItem(STORE_KEY,JSON.stringify(db));closeModal();refreshAll();showSuccess("SP3 berhasil dinonaktifkan.");
+  };
+  const oldSaveAgenda=window.saveAgenda;
+  window.saveAgenda=function(){oldSaveAgenda();setTimeout(()=>{if(!document.querySelector("#modalRoot .modal"))showSuccess("Agenda berhasil ditambahkan.")},0)};
+  const oldSaveHoliday=window.saveHoliday;
+  window.saveHoliday=function(date){oldSaveHoliday(date);setTimeout(()=>showSuccess("Hari berhasil ditandai sebagai hari libur."),0)};
+  const oldConfirmWorkingDay=window.confirmWorkingDay;
+  window.confirmWorkingDay=function(date){oldConfirmWorkingDay(date);setTimeout(()=>showSuccess("Hari berhasil ditandai sebagai hari kerja."),0)};
+
+  /* remove obsolete Horenso wording from monthly visible tables where possible */
+  const oldRenderMonthly=window.renderMonthlyReport;
+  if(typeof oldRenderMonthly==="function")window.renderMonthlyReport=function(){oldRenderMonthly();document.querySelectorAll("#monthlyTable th").forEach(th=>{if(/Horenso/i.test(th.textContent))th.style.display="none"})};
+
+  const oldInit=window.initApp;
+  window.initApp=function(){
+    oldInit();installChrome();setAttendanceHead();
+    const c=syncCfg();if(normalizeUrl(c.url))setTimeout(()=>manualSync(true),350);
+  };
+
+  document.addEventListener("DOMContentLoaded",()=>{
+    installChrome();setAttendanceHead();
+    const pageSettings=document.getElementById("page-settings");if(pageSettings)pageSettings.classList.remove("active");
+  });
+})();
+</script>
+
+
+<style id="kw-v46-style">
+:root{--kw-v46-top:42px}
+html,body{overflow-x:hidden!important}
+.topbar{border-bottom:2px solid #7f202b!important;box-shadow:0 6px 18px rgba(93,27,36,.10)!important}
+.top-title{font-weight:700!important;display:flex!important;align-items:baseline!important;gap:2px!important}
+.top-title .kw-title-sub{font-weight:400!important;font-size:11px!important;opacity:.9!important}
+.page{max-width:none!important;width:100%!important}
+.page-title{background:transparent!important;box-shadow:none!important;border:0!important}
+.page-title h2{font-weight:650!important}
+
+/* Home panels: true 50/50 and equal height. */
+#page-home .grid-2{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;align-items:stretch!important}
+#page-home .grid-2>.card{height:clamp(300px,48vh,520px)!important;display:flex!important;flex-direction:column!important;min-height:0!important}
+#page-home #todayAgenda,#page-home #attentionList{overflow:auto!important;min-height:0!important}
+
+/* Data Siswa: compact full-width header row. */
+#page-students{padding-top:0!important}
+#page-students .page-title{
+  position:sticky!important;top:42px!important;z-index:26!important;
+  display:flex!important;align-items:center!important;gap:10px!important;
+  min-height:42px!important;padding:4px 0!important;margin:0 0 6px!important;
+  backdrop-filter:blur(12px)!important;-webkit-backdrop-filter:blur(12px)!important;
+}
+#page-students .page-title h2{margin-right:auto!important}
+#page-students>.toolbar{
+  position:absolute!important;right:154px!important;top:5px!important;z-index:30!important;
+  margin:0!important;padding:0!important
+}
+#page-students #studentSearch{
+  width:230px!important;height:34px!important;border-radius:10px!important;padding:7px 34px 7px 10px!important;
+  background:rgba(255,255,255,.72)!important
+}
+#page-students>.toolbar::after{
+  content:"⌕";position:absolute;right:11px;top:7px;color:#8a8185;font-size:16px;pointer-events:none
+}
+#page-students .table-wrap{
+  position:relative!important;overflow:auto!important;max-height:calc(100vh - 102px)!important;
+  border-radius:16px!important;background:rgba(255,255,255,.58)!important
+}
+.student-table{width:100%!important;table-layout:fixed!important;min-width:780px!important}
+.student-table thead th{
+  position:sticky!important;top:0!important;z-index:8!important;background:#f3dde0!important;
+  color:#7e2631!important;font-weight:550!important;padding:9px 9px!important
+}
+.student-table tbody td{padding:9px!important;vertical-align:middle!important}
+.student-table th:nth-child(1){width:12%}.student-table th:nth-child(2){width:24%}
+.student-table th:nth-child(3){width:15%}.student-table th:nth-child(4){width:15%}
+.student-table th:nth-child(5){width:13%}.student-table th:nth-child(6){width:8%}.student-table th:nth-child(7){width:13%}
+.kw-action-menu{position:fixed!important;z-index:200!important;min-width:170px!important;box-shadow:0 18px 38px rgba(46,22,27,.16)!important}
+
+/* All table headers sortable / wrap-friendly. */
+table thead th{white-space:normal!important;line-height:1.16!important}
+.kw-sort-ind{font-size:9px!important;opacity:.6!important;margin-left:4px!important;font-weight:400!important}
+
+/* SP: aligned grid rows. */
+#spList .attention-row{
+  display:grid!important;grid-template-columns:minmax(220px,1.15fr) 110px minmax(240px,1fr) 210px!important;
+  gap:14px!important;align-items:center!important;min-height:68px!important
+}
+#spList .attention-row>div:last-child{justify-self:end!important}
+
+/* Compact Laporan Kegiatan Belajar Mengajar header. */
+#page-reports{padding-top:0!important}
+#page-reports .page-title{margin-bottom:4px!important;padding:3px 0!important;min-height:32px!important}
+#page-reports .page-title h2{font-size:15px!important}
+#page-reports .report-tabs{
+  position:sticky!important;top:76px!important;z-index:23!important;
+  display:flex!important;align-items:center!important;gap:6px!important;padding:5px!important;margin:0 0 6px!important;
+  background:rgba(247,247,248,.90)!important;backdrop-filter:blur(12px)!important;border-radius:13px!important
+}
+.report-tab{padding:8px 12px!important;font-size:12px!important;font-weight:500!important}
+#kwReportControl{margin-left:auto!important;display:flex!important;align-items:center!important;gap:7px!important;min-width:0!important}
+#kwReportControl input{width:220px!important;height:34px!important;border-radius:10px!important;padding:7px 30px 7px 10px!important}
+.kw-report-month-btn{height:34px!important;padding:7px 11px!important;border-radius:10px!important}
+.kw-student-total{
+  height:34px;display:flex;align-items:center;padding:0 11px;border-radius:10px;
+  background:#f7e5e8;color:#7f2732;font-size:11px;white-space:nowrap
+}
+#reportMonthlyPanel .monthly-toolbar,#reportMonthlyPanel .monthly-summary{display:none!important}
+#reportMonthlyPanel .monthly-card{padding:0!important;background:transparent!important;box-shadow:none!important;border:0!important}
+.monthly-table-wrap{max-height:calc(100vh - 180px)!important;overflow:auto!important;border-radius:14px!important}
+.monthly-table-wrap table{min-width:1120px!important;width:100%!important}
+.monthly-table-wrap thead th{
+  position:sticky!important;top:0!important;z-index:6!important;background:#9f2d39!important;color:white!important;
+  font-size:10px!important;font-weight:400!important;padding:9px 7px!important
+}
+.monthly-table-wrap tbody td{font-size:10.5px!important;padding:8px 7px!important}
+.monthly-actions{margin-top:7px!important;display:flex!important;justify-content:flex-end!important}
+#exportMonthlyBtn{font-size:11px!important;padding:8px 12px!important}
+
+/* Daily reports compact. */
+#reportsList .attention-row{
+  display:grid!important;grid-template-columns:minmax(210px,1.2fr) 100px minmax(220px,1fr) 72px!important;
+  align-items:center!important;gap:12px!important;min-height:52px!important;padding:8px 10px!important
+}
+#reportsList .attention-row .btn{padding:7px 10px!important;font-size:11px!important}
+
+/* Two-panel Settings modal. */
+.kw-settings-shell{display:grid;grid-template-columns:190px minmax(0,1fr);min-height:430px;max-height:min(72vh,620px)}
+.kw-settings-side{padding:8px;border-right:1px solid rgba(119,52,61,.10);display:flex;flex-direction:column;gap:6px}
+.kw-settings-side h3{margin:6px 8px 12px;font-size:17px}
+.kw-settings-nav{
+  border:0;background:transparent;text-align:left;padding:10px 11px;border-radius:11px;color:#5f585c;
+  font-size:12px;cursor:pointer
+}
+.kw-settings-nav.active{background:#f5e1e4;color:#872936;font-weight:600}
+.kw-settings-content{padding:14px 18px;overflow:auto;min-width:0}
+.kw-settings-content h4{margin:2px 0 14px;font-size:14px}
+.kw-settings-bottom{display:flex;justify-content:flex-end;gap:7px;margin-top:14px}
+
+/* Custom select used by Edit Siswa. */
+.kw-select-shell{position:relative}
+.kw-select-btn{
+  width:100%;height:42px;border:1px solid rgba(95,54,61,.12);border-radius:12px;background:rgba(255,255,255,.82);
+  display:flex;align-items:center;justify-content:space-between;padding:0 12px;color:#2b282a;font-size:13px
+}
+.kw-select-btn .tri{width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:6px solid #6f666a}
+.kw-select-menu{
+  position:absolute;left:0;right:0;top:46px;z-index:30;padding:6px;background:rgba(255,255,255,.97);
+  border:1px solid rgba(102,46,55,.10);border-radius:12px;box-shadow:0 16px 32px rgba(64,26,32,.13)
+}
+.kw-select-menu button{width:100%;border:0;background:transparent;text-align:left;padding:9px 10px;border-radius:9px;font-size:12px}
+.kw-select-menu button:hover,.kw-select-menu button.active{background:#f5e3e6;color:#852934}
+.kw-grad-summary{
+  grid-column:1/-1;padding:11px 12px;border-radius:12px;background:rgba(248,232,235,.72);
+  border:1px solid rgba(148,53,66,.10);font-size:11px;line-height:1.55
+}
+.kw-grad-summary strong{font-weight:600}
+.kw-form-error{font-size:10px;color:#a32937;margin-top:5px}
+
+/* Version label */
+#kwVersionLabel{font-size:8.5px!important;opacity:.58!important}
+
+@media(max-width:820px){
+  #page-students>.toolbar{position:static!important;margin:0 0 6px!important}
+  #page-students .page-title{flex-wrap:wrap!important}
+  #page-students #studentSearch{width:100%!important}
+  #page-students>.toolbar{width:100%!important}
+  #spList .attention-row{grid-template-columns:minmax(0,1fr) 68px!important}
+  #spList .attention-row>div:nth-child(3){grid-column:1/2!important}
+  #spList .attention-row>div:last-child{grid-column:2/3!important;grid-row:1/3!important}
+  .kw-settings-shell{grid-template-columns:122px minmax(0,1fr)}
+  .kw-settings-side h3{font-size:14px;margin-left:5px}.kw-settings-nav{font-size:10px;padding:9px 7px}
+  #kwReportControl input{width:150px!important}
+}
+@media(max-width:640px) and (orientation:portrait){
+  #page-home .grid-2{grid-template-columns:1fr!important}
+  #page-home .grid-2>.card{height:330px!important}
+  .student-table{min-width:760px!important}
+  #page-students .table-wrap{overflow-x:auto!important}
+  .monthly-table-wrap{overflow-x:auto!important}
+  #page-reports .report-tabs{top:76px!important;flex-wrap:wrap!important}
+  #kwReportControl{width:100%!important;margin-left:0!important}
+  #kwReportControl input{width:100%!important}
+}
+@media(max-width:900px) and (orientation:landscape){
+  .student-table{min-width:0!important;font-size:10px!important}
+  .student-table th,.student-table td{padding:6px!important}
+  .monthly-table-wrap table{min-width:0!important;table-layout:fixed!important}
+  .monthly-table-wrap th,.monthly-table-wrap td{font-size:8px!important;padding:5px 3px!important}
+}
+</style>
+
+
+<script id="kw-v46-script">
+(function(){
+  const V46_VERSION="KitaWorks_v46_Full_Sync_Laporan_HTML.html";
+  const SYNC_KEY="kitaworks_sync_v45";
+
+  const norm=v=>String(v??"").trim();
+  const q=(s,r=document)=>r.querySelector(s);
+  const qa=(s,r=document)=>[...r.querySelectorAll(s)];
+
+  function saveDBV46(){
+    localStorage.setItem(STORE_KEY,JSON.stringify(db));
+    refreshAll();
+  }
+
+  function installV46(){
+    const version=q("#kwVersionLabel");if(version)version.textContent=V46_VERSION;
+    const title=q(".top-title");
+    if(title)title.innerHTML=`<span>KitaWorks</span><span class="kw-title-sub">・Daftar Hadir Siswa</span>`;
+    const reportTitle=q("#page-reports .page-title h2");if(reportTitle)reportTitle.textContent="Laporan Kegiatan Belajar Mengajar";
+
+    const tabs=q("#page-reports .report-tabs");
+    if(tabs&&!q("#kwReportControl",tabs)){
+      const host=document.createElement("div");host.id="kwReportControl";tabs.appendChild(host);
+    }
+    const exp=q("#exportMonthlyBtn");
+    if(exp){exp.textContent="Download Laporan Bulanan";exp.setAttribute("onclick","downloadMonthlyHTMLV46()")}
+    renderReportControlsV46();
+
+    document.addEventListener("click",e=>{
+      if(!e.target.closest(".kw-action-wrap"))qa(".kw-action-menu").forEach(m=>m.classList.add("hidden"));
+    });
+  }
+
+  /* ---------------- Generic table sorting ---------------- */
+  function valueFromCell(td,type){
+    const raw=(td?.dataset.sortValue||td?.textContent||"").trim();
+    if(type==="number"){const n=Number(raw.replace(/[^\d.-]/g,""));return Number.isFinite(n)?n:0}
+    if(type==="date"){const t=Date.parse(raw);return Number.isFinite(t)?t:raw.toLowerCase()}
+    return raw.toLowerCase();
+  }
+  document.addEventListener("click",e=>{
+    const th=e.target.closest("table thead th");if(!th)return;
+    if(/aksi/i.test(th.textContent||""))return;
+    const table=th.closest("table"),body=table?.tBodies?.[0];if(!body)return;
+    const headers=[...th.parentElement.children],idx=headers.indexOf(th);
+    const prev=th.dataset.sortDir||"";
+    headers.forEach(h=>{delete h.dataset.sortDir;const x=h.querySelector(".kw-sort-ind");if(x)x.remove()});
+    const dir=prev==="asc"?"desc":prev==="desc"?"":"asc";
+    if(!dir)return;
+    th.dataset.sortDir=dir;
+    const ind=document.createElement("span");ind.className="kw-sort-ind";ind.textContent=dir==="asc"?"↑":"↓";th.appendChild(ind);
+    const type=th.dataset.sortType||(/tanggal|mulai/i.test(th.textContent)?"date":/no|hadir|telat|izin|sakit|jumlah|sp/i.test(th.textContent)?"number":"text");
+    [...body.rows].sort((a,b)=>{
+      const A=valueFromCell(a.cells[idx],type),B=valueFromCell(b.cells[idx],type);
+      return ((A>B)-(A<B))*(dir==="asc"?1:-1);
+    }).forEach(r=>body.appendChild(r));
+  });
+
+  /* ---------------- Action dropdown: never clipped ---------------- */
+  window.toggleStudentMenu=function(ev,id){
+    ev.stopPropagation();
+    qa(".kw-action-menu").forEach(m=>{if(m.id!==`kwMenu_${id}`)m.classList.add("hidden")});
+    const menu=q(`#kwMenu_${CSS.escape(id)}`),btn=ev.currentTarget;if(!menu||!btn)return;
+    const opening=menu.classList.contains("hidden");
+    if(!opening){menu.classList.add("hidden");return}
+    menu.classList.remove("hidden");
+    const r=btn.getBoundingClientRect(),mw=180;
+    menu.style.left=Math.min(window.innerWidth-mw-10,Math.max(8,r.right-mw))+"px";
+    menu.style.top=(r.bottom+6)+"px";
+    requestAnimationFrame(()=>{
+      const mr=menu.getBoundingClientRect();
+      if(mr.bottom>window.innerHeight-8)menu.style.top=Math.max(8,r.top-mr.height-6)+"px";
+    });
+  };
+
+  /* ---------------- Settings 2-panel modal ---------------- */
+  function syncCfgV46(){
+    let x={};try{x=JSON.parse(localStorage.getItem(SYNC_KEY)||"{}")}catch(_){}
+    return Object.assign({url:"",token:"KW-Kitamura-2024",lastSync:"",lastCount:0,lastStatus:"Belum disinkronkan"},x);
+  }
+  function settingsShell(tab){
+    window.__kwSettingsTab=tab||window.__kwSettingsTab||"google";
+    const active=window.__kwSettingsTab;
+    showModal(`<div class="kw-settings-shell">
+      <aside class="kw-settings-side">
+        <h3>Pengaturan</h3>
+        <button class="kw-settings-nav ${active==="google"?"active":""}" onclick="openSettingsTabV46('google')">Google Spreadsheet</button>
+        <button class="kw-settings-nav ${active==="attendance"?"active":""}" onclick="openSettingsTabV46('attendance')">Aturan Kehadiran</button>
+      </aside>
+      <section class="kw-settings-content" id="kwSettingsContent"></section>
+    </div>`);
+    renderSettingsContentV46();
+  }
+  window.openSettingsPopup=function(){toggleSidebar(false);settingsShell("google")};
+  window.openSettingsTabV46=function(tab){window.__kwSettingsTab=tab;settingsShell(tab)};
+  window.renderSettingsContentV46=function(){
+    const host=q("#kwSettingsContent");if(!host)return;
+    if(window.__kwSettingsTab==="google"){
+      const c=syncCfgV46(),last=c.lastSync?new Date(c.lastSync).toLocaleString("id-ID"):"Belum pernah";
+      host.innerHTML=`<h4>Google Spreadsheet</h4>
+        <div class="field"><label>Apps Script Web App URL</label><input id="syncUrl" value="${esc(c.url)}" placeholder="https://script.google.com/macros/s/.../exec"></div>
+        <div class="field"><label>Sync Token</label><input id="syncToken" value="${esc(c.token)}"></div>
+        <div class="toolbar"><button class="btn btn-outline" onclick="testSyncConnection()">Test Connection</button><button class="btn btn-outline" onclick="closeModal();manualSync()">Sync Now</button></div>
+        <div class="kw-sync-meta"><div class="kw-sync-stat"><span>Terakhir sync</span><strong>${esc(last)}</strong></div>
+          <div class="kw-sync-stat"><span>Jumlah siswa</span><strong>${Number(c.lastCount||0)}</strong></div>
+          <div class="kw-sync-stat" style="grid-column:1/-1"><span>Status</span><strong>${esc(c.lastStatus||"-")}</strong></div></div>
+        <div class="kw-settings-bottom"><button class="btn btn-secondary" onclick="closeModal()">Tutup</button><button class="btn btn-primary" onclick="saveGoogleSettingsV46()">Simpan</button></div>`;
+    }else{
+      host.innerHTML=`<h4>Aturan Kehadiran</h4>
+        <div class="field"><label>Batas hadir tepat waktu</label><input id="v46Cutoff" value="${esc(settings.cutoff||"07:45")}" readonly></div>
+        <div class="field"><label>Target pemulihan SP</label><input id="v46Recovery" type="number" min="1" value="${Number(settings.recovery||5)}"></div>
+        <p class="muted">SP1 aktif setelah 5 kali telat. Pemulihan menggunakan 5 kali hadir tepat waktu berturut-turut.</p>
+        <div class="kw-settings-bottom"><button class="btn btn-secondary" onclick="closeModal()">Tutup</button><button class="btn btn-primary" onclick="saveAttendanceSettingsV46()">Simpan</button></div>`;
+    }
+  };
+  window.saveGoogleSettingsV46=function(){
+    const c=syncCfgV46();c.url=norm(q("#syncUrl")?.value).replace(/\?.*$/,"").replace(/\/+$/,"");c.token=norm(q("#syncToken")?.value);
+    localStorage.setItem(SYNC_KEY,JSON.stringify(c));closeModal();showSuccess("Pengaturan Google Spreadsheet berhasil diperbarui.");
+  };
+  window.saveAttendanceSettingsV46=function(){
+    settings.recovery=Math.max(1,Number(q("#v46Recovery")?.value)||5);
+    localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));recalcSP();localStorage.setItem(STORE_KEY,JSON.stringify(db));closeModal();refreshAll();showSuccess("Aturan kehadiran berhasil diperbarui.");
+  };
+
+  /* ---------------- Edit Student: custom dropdown + staged Lulus SO ---------------- */
+  function newDraft(s){
+    return {
+      id:s?.id||"",nis:s?.nis||"",name:s?.name||"",gender:s?.gender||"Laki-laki",
+      start:s?.start||"",status:s?.status||"Belajar",
+      soDate:s?.soDate||"",soName:s?.soName||"",kaisha:s?.kaisha||"",kumiai:s?.kumiai||"",job:s?.job||"",
+      oldStatus:s?.status||"Belajar",oldNis:s?.nis||""
+    };
+  }
+  function syncDraftFromFields(){
+    const d=window.__stDraft;if(!d)return;
+    if(q("#stNis"))d.nis=norm(q("#stNis").value).toUpperCase();
+    if(q("#stName"))d.name=titleCaseName(norm(q("#stName").value));
+    if(q("#stStart"))d.start=q("#stStart").value||"";
+  }
+  function selectHtml(id,label,value,options){
+    return `<div class="field"><label>${label}</label><div class="kw-select-shell">
+      <button type="button" class="kw-select-btn" onclick="toggleStudentSelectV46('${id}')"><span id="${id}Label">${esc(value)}</span><span class="tri"></span></button>
+      <div id="${id}Menu" class="kw-select-menu hidden">${options.map(v=>`<button type="button" class="${v===value?"active":""}" onclick="chooseStudentSelectV46('${id}','${v.replace(/'/g,"\\'")}')">${esc(v)}</button>`).join("")}</div>
+    </div></div>`;
+  }
+  function renderStudentEditor(){
+    const d=window.__stDraft;if(!d)return;
+    showModal(`<h3>${d.id?"Edit":"Tambah"} Siswa</h3><div class="form-grid">
+      <div class="field"><label>Nomor Induk</label><input id="stNis" value="${esc(d.nis)}" oninput="studentDraftChangedV46()"></div>
+      <div class="field"><label>Nama</label><input id="stName" value="${esc(d.name)}" oninput="studentDraftChangedV46()"></div>
+      ${selectHtml("stGenderV46","Jenis Kelamin",d.gender,["Laki-laki","Perempuan"])}
+      <div class="field"><label>Tanggal Awal Belajar</label>${dateButton("stStart",d.start||"","Tanggal Awal Belajar")}</div>
+      ${selectHtml("stStatusV46","Status",d.status,["Belajar","Lulus SO"])}
+      ${d.status==="Lulus SO"&&d.soDate?`<div class="kw-grad-summary"><strong>Detail Kelulusan</strong><br>
+        ${esc(d.soDate)} ・ ${esc(d.soName)} ・ ${esc(d.kaisha)} ・ ${esc(d.kumiai)} ・ ${esc(d.job)}
+        <div style="margin-top:6px"><button class="btn btn-outline" style="padding:6px 9px;font-size:10px" onclick="syncDraftFromFieldsV46();openGraduationV46()">Edit Detail</button></div>
+      </div>`:""}
+    </div><div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Batal</button>
+      <button id="studentSaveBtn" class="btn btn-primary" onclick="saveStudentV46()">Simpan Siswa</button></div>`);
+  }
+  window.openStudentModal=function(id=null){
+    const s=id?db.students.find(x=>x.id===id):null;window.__stDraft=newDraft(s);renderStudentEditor();
+  };
+  window.studentDraftChangedV46=function(){syncDraftFromFields()};
+  window.syncDraftFromFieldsV46=function(){syncDraftFromFields()};
+  window.toggleStudentSelectV46=function(id){
+    qa(".kw-select-menu").forEach(m=>{if(m.id!==id+"Menu")m.classList.add("hidden")});
+    q("#"+id+"Menu")?.classList.toggle("hidden");
+  };
+  window.chooseStudentSelectV46=function(id,value){
+    syncDraftFromFields();const d=window.__stDraft;if(!d)return;
+    if(id==="stGenderV46")d.gender=value;
+    if(id==="stStatusV46"){
+      const before=d.status;d.status=value;
+      if(value==="Belajar"){d.soDate=d.soName=d.kaisha=d.kumiai=d.job="";renderStudentEditor();return}
+      if(value==="Lulus SO"&&!d.soDate){window.__statusBeforeGrad=before;openGraduationV46();return}
+    }
+    renderStudentEditor();
+  };
+  window.openGraduationV46=function(){
+    syncDraftFromFields();const d=window.__stDraft;
+    showModal(`<h3>Detail Kelulusan SO</h3><p class="muted">${esc(d?.name||"Siswa")}</p><div class="form-grid">
+      <div class="field"><label>Tanggal Lulus SO</label>${dateButton("gradDateV46",d?.soDate||"","Tanggal Lulus SO")}</div>
+      <div class="field"><label>SO</label><input id="gradSoV46" value="${esc(d?.soName||"")}"></div>
+      <div class="field"><label>Kaisha</label><input id="gradKaishaV46" value="${esc(d?.kaisha||"")}"></div>
+      <div class="field"><label>Kumiai</label><input id="gradKumiaiV46" value="${esc(d?.kumiai||"")}"></div>
+      <div class="field"><label>Job</label><input id="gradJobV46" value="${esc(d?.job||"")}"></div>
+    </div><div class="modal-actions"><button class="btn btn-secondary" onclick="cancelGraduationV46()">Batal</button>
+      <button class="btn btn-primary" onclick="saveGraduationDraftV46()">Simpan Detail Kelulusan</button></div>`);
+  };
+  window.cancelGraduationV46=function(){
+    const d=window.__stDraft;if(d&&!d.soDate)d.status=window.__statusBeforeGrad||d.oldStatus||"Belajar";renderStudentEditor();
+  };
+  window.saveGraduationDraftV46=function(){
+    const d=window.__stDraft;if(!d)return;
+    const vals={
+      soDate:q("#gradDateV46")?.value||"",soName:norm(q("#gradSoV46")?.value),kaisha:norm(q("#gradKaishaV46")?.value),
+      kumiai:norm(q("#gradKumiaiV46")?.value),job:norm(q("#gradJobV46")?.value)
+    };
+    if(Object.values(vals).some(v=>!v)){alert("Semua detail kelulusan wajib diisi.");return}
+    Object.assign(d,vals,{status:"Lulus SO"});renderStudentEditor();
+  };
+  window.saveStudentV46=async function(){
+    syncDraftFromFields();const d=window.__stDraft;if(!d)return;
+    if(!d.nis||!d.name){alert("Nomor Induk dan nama wajib diisi.");return}
+    if(db.students.some(x=>norm(x.nis).toUpperCase()===d.nis&&x.id!==d.id)){alert("Nomor Induk sudah digunakan oleh siswa lain.");return}
+    if(d.status==="Lulus SO"&&[d.soDate,d.soName,d.kaisha,d.kumiai,d.job].some(v=>!v)){openGraduationV46();return}
+    let old=d.id?db.students.find(x=>x.id===d.id):null;
+    const obj=Object.assign({id:d.id||crypto.randomUUID(),spLevel:0,spProgress:0,spHistory:[],sp3Deactivations:[]},old||{},d);
+    delete obj.oldStatus;delete obj.oldNis;
+    if(old)Object.assign(old,obj);else db.students.push(obj);
+    localStorage.setItem(STORE_KEY,JSON.stringify(db));refreshAll();
+    try{
+      await pushStudentToSheet(Object.assign({},obj,{oldNis:d.oldNis||""}));
+      closeModal();showSuccess("Data siswa berhasil diperbarui dan disinkronkan.");
+    }catch(e){
+      showModal(`<h3>Data tersimpan lokal</h3><p>Sinkronisasi ke Spreadsheet belum berhasil.</p><p class="muted">${esc(e.message||e)}</p>
+        <div class="modal-actions"><button class="btn btn-primary" onclick="closeModal()">Tutup</button></div>`);
+    }
+  };
+
+  /* ---------------- Reports ---------------- */
+  window.renderReportControlsV46=function(){
+    const host=q("#kwReportControl");if(!host)return;
+    if(reportTab==="daily"){
+      host.innerHTML=`<div class="search-wrap" style="position:relative"><input id="kwDailySearch" placeholder="Cari hari / tanggal" oninput="renderReportsV46()"><span style="position:absolute;right:9px;top:7px;color:#888">⌕</span></div>`;
+    }else{
+      host.innerHTML=`<button class="btn btn-outline kw-report-month-btn" onclick="openMonthPicker()"><span id="kwMonthControlText">${esc(monthLabel(reportMonth))}</span> ▾</button>
+        <div id="kwStudentTotal" class="kw-student-total">Jumlah Siswa: 0</div>`;
+    }
+  };
+  window.switchReportTab=function(tab){
+    reportTab=tab;
+    q("#reportDailyPanel")?.classList.toggle("hidden",tab!=="daily");
+    q("#reportMonthlyPanel")?.classList.toggle("hidden",tab!=="monthly");
+    q("#reportTabDaily")?.classList.toggle("active",tab==="daily");
+    q("#reportTabMonthly")?.classList.toggle("active",tab==="monthly");
+    renderReportControlsV46();
+    if(tab==="monthly")renderMonthlyReport();else renderReportsV46();
+  };
+  window.renderReportsV46=function(){
+    const el=q("#reportsList");if(!el)return;
+    const query=norm(q("#kwDailySearch")?.value).toLowerCase();
+    const arr=[...db.reports].sort((a,b)=>b.date.localeCompare(a.date)).filter(r=>{
+      if(!query)return true;return (`${fmtDate(r.date)} ${r.date}`).toLowerCase().includes(query)
+    });
+    el.innerHTML=arr.length?arr.map(r=>`<div class="attention-row">
+      <div>${esc(fmtDate(r.date))}</div><div><span class="badge b-good">Tersimpan</span></div>
+      <div class="muted">Diperbarui ${new Date(r.updatedAt).toLocaleString("id-ID")}</div>
+      <button class="btn btn-outline" onclick="showReport('${r.id}')">Buka</button></div>`).join(""):`<div class="empty">Belum ada laporan tersimpan.</div>`;
+  };
+  window.renderReports=window.renderReportsV46;
+
+  function monthBounds(ym){
+    const [y,m]=ym.split("-").map(Number),start=new Date(y,m-1,1,12),end=new Date(y,m,0,12),today=new Date();today.setHours(12,0,0,0);
+    return {start,end:today<end&&today>=start?today:end};
+  }
+  function effectiveStudyDays(student){
+    if(!student.start)return 0;
+    const b=monthBounds(reportMonth),s=parseISO(student.start);s.setHours(12,0,0,0);
+    let cur=new Date(Math.max(s.getTime(),b.start.getTime())),count=0;
+    for(;cur<=b.end;cur.setDate(cur.getDate()+1)){
+      const dow=cur.getDay(),iso=isoDate(cur);if(dow!==0&&dow!==6&&!db.holidays[iso])count++;
+    }
+    return count;
+  }
+  window.monthlyRowsV46=function(){
+    const b=monthBounds(reportMonth);
+    return db.students.filter(s=>{
+      if(!s.start)return true;
+      const sd=parseISO(s.start);sd.setHours(12,0,0,0);return sd<=b.end;
+    }).map(s=>{
+      const row={id:s.id,nis:s.nis,name:s.name,start:s.start||"",studyDays:effectiveStudyDays(s),hadir:0,telat:0,izin:0,sakit:0,tk:0,notes:[]};
+      Object.entries(db.attendance).forEach(([date,day])=>{
+        if(!date.startsWith(reportMonth))return;const r=day.records?.[s.id];if(!r)return;
+        if(r.status==="Hadir"){row.hadir++}
+        else if(r.status==="Telat"){row.hadir++;row.telat++}
+        else if(r.status==="Izin")row.izin++;
+        else if(r.status==="Sakit")row.sakit++;
+        else if(r.status==="Tanpa Keterangan")row.tk++;
+        if(norm(r.note))row.notes.push(`${new Date(date+"T12:00:00").toLocaleDateString("id-ID",{day:"numeric",month:"short"})}: ${norm(r.note)}`);
+      });
+      return row;
+    }).sort((a,b)=>a.name.localeCompare(b.name,"id"));
+  };
+  window.renderMonthlyReport=function(){
+    const rows=monthlyRowsV46();
+    const ctl=q("#kwMonthControlText");if(ctl)ctl.textContent=monthLabel(reportMonth);
+    const tot=q("#kwStudentTotal");if(tot)tot.textContent=`Jumlah Siswa: ${rows.length}`;
+    const oldText=q("#reportMonthText");if(oldText)oldText.textContent=monthLabel(reportMonth);
+    const host=q("#monthlyTable");if(!host)return;
+    if(!rows.length){host.innerHTML=`<div class="empty">Belum ada siswa untuk ${esc(monthLabel(reportMonth))}.</div>`;return}
+    host.innerHTML=`<div class="monthly-table-wrap"><table><thead><tr>
+      <th>No</th><th>NIS</th><th>Nama</th><th>Tanggal Masuk</th><th>Jumlah Hari Belajar</th><th>Hadir</th><th>Telat</th><th>Izin</th><th>Sakit</th><th>Tanpa Keterangan</th><th>Catatan Guru</th>
+      </tr></thead><tbody>${rows.map((r,i)=>`<tr>
+        <td data-sort-value="${i+1}">${i+1}</td><td>${esc(r.nis)}</td><td>${esc(r.name)}</td>
+        <td data-sort-value="${esc(r.start)}">${r.start?esc(new Date(r.start+"T12:00:00").toLocaleDateString("id-ID",{day:"2-digit",month:"short",year:"numeric"})):"-"}</td>
+        <td data-sort-value="${r.studyDays}">${r.studyDays} hari</td><td data-sort-value="${r.hadir}">${r.hadir}</td><td data-sort-value="${r.telat}">${r.telat}</td>
+        <td data-sort-value="${r.izin}">${r.izin}</td><td data-sort-value="${r.sakit}">${r.sakit}</td><td data-sort-value="${r.tk}">${r.tk}</td>
+        <td>${r.notes.length?r.notes.map(esc).join("<br>"):"-"}</td></tr>`).join("")}</tbody></table></div>`;
+  };
+
+  /* Standalone monthly HTML report snapshot */
+  function reportRowsJson(rows){return JSON.stringify(rows).replace(/</g,"\\u003c")}
+  window.downloadMonthlyHTMLV46=function(){
+    const rows=monthlyRowsV46(),label=monthLabel(reportMonth);if(!rows.length){alert("Belum ada data siswa untuk bulan ini.");return}
+    const logo=q(".topbar img")?.src||"";
+    const totalPresent=rows.reduce((a,r)=>a+r.hadir,0),totalLate=rows.reduce((a,r)=>a+r.telat,0),totalAbsent=rows.reduce((a,r)=>a+r.izin+r.sakit+r.tk,0);
+    const report=`<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KitaWorks・Laporan Kehadiran ${label}</title><style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:#292629;background:linear-gradient(135deg,#fbf7f8,#f1f4f6);overflow-x:hidden}
+nav{height:64px;background:#b33a46;color:#fff;border-bottom:3px solid #7f202b;display:flex;align-items:center;padding:0 18px;gap:10px}
+nav img{width:40px;height:40px;border-radius:50%;object-fit:cover;background:#fff}.brand{font-weight:700}.sub{font-weight:400;font-size:11px}.desc{font-size:9px;opacity:.75;margin-top:2px}
+.actions{margin-left:auto;display:flex;gap:8px;align-items:center}.chip,button{border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);color:#fff;padding:9px 12px;border-radius:10px;font:inherit;font-size:11px}
+main{padding:12px;max-width:1500px;margin:auto}.glass{background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.88);box-shadow:0 14px 32px rgba(80,28,36,.08);border-radius:16px}
+.table-card{padding:0;overflow:hidden;margin-bottom:10px}.head{padding:10px 12px;border-bottom:1px solid #eadfe2;font-size:12px}.wrap{overflow:auto;max-height:56vh}
+table{width:100%;border-collapse:collapse;min-width:1060px}th{position:sticky;top:0;background:#9f2d39;color:#fff;font-size:9px;font-weight:400;text-align:left;padding:8px 6px;white-space:normal}td{font-size:9.5px;padding:8px 6px;border-bottom:1px solid #efe7e9;vertical-align:top}
+.visual{display:grid;grid-template-columns:1fr 1fr;gap:10px}.panel{padding:12px;height:260px;overflow:auto}.panel h3{font-size:13px;font-weight:500;margin:0 0 4px}.muted{font-size:9px;color:#7c7478}
+.bars{height:190px;display:flex;align-items:flex-end;justify-content:space-around;border-bottom:1px solid #e7dfe1;padding:18px 20px 0}.baritem{text-align:center;width:27%}.bar{width:46px;margin:auto;transform-origin:bottom;animation:grow 1.1s cubic-bezier(.16,.72,.24,1);border-radius:4px 4px 0 0}.n{font-size:15px}.u{font-size:8px;color:#888}.l{font-size:9px;color:#6f686b;margin-top:5px}@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.insight{font-size:10px;line-height:1.55}.item{padding:8px 0;border-bottom:1px solid #eee}.item strong{font-weight:550}
+@media(max-width:700px){.visual{grid-template-columns:1fr 1fr}.wrap{overflow-x:auto}.panel{height:220px}}@media print{button{display:none}.wrap{max-height:none;overflow:visible}body{background:#fff}.glass{box-shadow:none}}
+</style></head><body><nav><img src="${logo}"><div><div class="brand">KitaWorks<span class="sub">・Laporan Kehadiran Siswa</span></div><div class="desc">Ringkasan dan rekap bulanan kegiatan belajar mengajar siswa</div></div><div class="actions"><span class="chip">${label}</span><button onclick="print()">Cetak PDF</button></div></nav>
+<main><section class="glass table-card"><div class="head">Rekap Bulanan・${label}・${rows.length} siswa</div><div class="wrap"><table><thead><tr><th>No</th><th>NIS</th><th>Nama</th><th>Tanggal Masuk</th><th>Jumlah Hari Belajar</th><th>Hadir</th><th>Telat</th><th>Izin</th><th>Sakit</th><th>Tanpa Keterangan</th><th>Catatan Guru</th></tr></thead><tbody>${rows.map((r,i)=>`<tr><td>${i+1}</td><td>${esc(r.nis)}</td><td>${esc(r.name)}</td><td>${r.start?esc(new Date(r.start+"T12:00:00").toLocaleDateString("id-ID")):"-"}</td><td>${r.studyDays} hari</td><td>${r.hadir||"–"}</td><td>${r.telat||"–"}</td><td>${r.izin||"–"}</td><td>${r.sakit||"–"}</td><td>${r.tk||"–"}</td><td>${r.notes.length?r.notes.map(esc).join("<br>"):"-"}</td></tr>`).join("")}</tbody></table></div></section>
+<section class="visual"><article class="glass panel"><h3>Ringkasan Kehadiran</h3><div class="muted">Akumulasi pada ${label}</div><div class="bars">
+${[
+["Hadir",totalPresent,"kehadiran","#3f8f67"],
+["Telat",totalLate,"kali","#d49a1f"],
+["Ketidakhadiran",totalAbsent,"hari","#c64f5a"]
+].map(x=>`<div class="baritem"><div class="n">${x[1]} <span class="u">${x[2]}</span></div><div class="bar" style="height:${Math.max(8,x[1]/Math.max(totalPresent,totalLate,totalAbsent,1)*115)}px;background:${x[3]}"></div><div class="l">${x[0]}</div></div>`).join("")}</div></article>
+<article class="glass panel"><h3>Insight Bulanan</h3><div class="muted">Ringkasan kondisi siswa pada ${label}</div><div class="insight"><div class="item">Tercatat <strong>${rows.length} siswa</strong>, <strong>${totalPresent} kehadiran</strong>, <strong>${totalLate} kali telat</strong>, dan <strong>${totalAbsent} hari ketidakhadiran</strong>.</div>${rows.filter(r=>r.telat||r.izin||r.sakit||r.tk||r.notes.length).slice(0,8).map(r=>`<div class="item"><strong>${esc(r.name)}</strong><br>${r.notes.length?r.notes.map(esc).join(" · "):`${r.telat}× telat · ${r.izin+r.sakit+r.tk} hari tidak hadir`}</div>`).join("")}</div></article></section></main></body></html>`;
+    const blob=new Blob([report],{type:"text/html;charset=utf-8"});
+    const safe=label.replace(/\s+/g,"_"),name=`KitaWorks_Laporan_Kehadiran_${safe}.html`;
+    const a=document.createElement("a"),url=URL.createObjectURL(blob);a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1200);
+    showSuccess(`Laporan bulanan berhasil diunduh: ${name}`);
+  };
+
+  /* SP3 success button should only enable with a reason. */
+  window.openSP3=function(id){
+    const s=db.students.find(x=>x.id===id);if(!s||s.spLevel!==3)return;
+    showModal(`<h3>Nonaktifkan SP3</h3><p><strong>${esc(s.name)}</strong></p><p class="muted">Masukkan alasan dari Atasan.</p>
+      <div class="field"><label>Alasan Atasan</label><textarea id="sp3DisableReason" oninput="document.getElementById('sp3DisableBtn').disabled=!this.value.trim()"></textarea></div>
+      <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Batal</button>
+      <button id="sp3DisableBtn" class="btn btn-primary" disabled onclick="deactivateSP3V46('${id}')">Nonaktifkan SP3</button></div>`,"locked");
+  };
+  window.deactivateSP3V46=function(id){
+    const s=db.students.find(x=>x.id===id),reason=norm(q("#sp3DisableReason")?.value);if(!s||!reason)return;
+    s.sp3Deactivations=s.sp3Deactivations||[];s.sp3Deactivations.push({date:isoDate(new Date()),reason,at:new Date().toISOString()});
+    recalcSP();localStorage.setItem(STORE_KEY,JSON.stringify(db));closeModal();refreshAll();showSuccess("SP3 berhasil dinonaktifkan.");
+  };
+
+  /* Make report rebuild / UI robust after month picker selection. */
+  const oldChooseReportMonth=window.chooseReportMonth;
+  window.chooseReportMonth=function(m){
+    reportMonth=`${window.__monthYear}-${String(m).padStart(2,"0")}`;closeModal();renderReportControlsV46();renderMonthlyReport();
+  };
+
+  /* Ensure page/settings sidebar opens popup, not a settings page. */
+  qa('.nav-item[data-page="settings"]').forEach(b=>b.setAttribute("onclick","openSettingsPopup()"));
+
+  document.addEventListener("DOMContentLoaded",()=>{
+    installV46();
+    renderReportsV46();
+    renderStudents();
+  });
+  setTimeout(installV46,0);
 })();
 </script>
 
