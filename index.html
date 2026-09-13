@@ -821,6 +821,123 @@ main{
 }
 </style>
 
+
+<style id="kw-v44">
+/* ===== KitaWorks v44: compact attendance table ===== */
+body.kw-modal-open{overflow:hidden!important;touch-action:none!important}
+body.kw-modal-open #app{pointer-events:none!important}
+body.kw-modal-open #modalRoot{pointer-events:auto!important}
+
+#page-attendance .table-wrap{
+  width:100%;max-width:100%;overflow-x:auto!important;overflow-y:visible!important;
+  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;
+  border-radius:20px;background:rgba(255,255,255,.50);
+  box-shadow:0 12px 34px rgba(68,40,48,.09);
+}
+#page-attendance .attendance-table{
+  width:100%;min-width:920px;border-collapse:separate;border-spacing:0;
+  table-layout:fixed;background:transparent;
+}
+#page-attendance .attendance-table th{
+  position:sticky;top:0;z-index:2;
+  background:rgba(184,55,69,.11)!important;
+  color:#6f3039;font-size:12px;font-weight:600;padding:11px 8px;
+  border-bottom:1px solid rgba(184,55,69,.14);white-space:nowrap;
+}
+#page-attendance .attendance-table td{
+  padding:9px 7px;border-bottom:1px solid rgba(80,55,60,.08);
+  background:rgba(255,255,255,.32);vertical-align:middle;font-size:13px;
+}
+#page-attendance .attendance-table tr:last-child td{border-bottom:0}
+#page-attendance .attendance-table th:nth-child(1){width:42px}
+#page-attendance .attendance-table th:nth-child(2){width:180px}
+#page-attendance .attendance-table th:nth-child(3){width:68px}
+#page-attendance .attendance-table th:nth-child(4){width:68px}
+#page-attendance .attendance-table th:nth-child(5){width:92px}
+#page-attendance .attendance-table th:nth-child(6){width:150px}
+#page-attendance .attendance-table th:nth-child(7){width:105px}
+#page-attendance .attendance-table th:nth-child(8){width:132px}
+#page-attendance .attendance-table th:nth-child(9){width:180px}
+
+.kw-num{
+  width:22px;height:22px;border-radius:999px;margin:auto;display:grid;place-items:center;
+  background:rgba(237,159,181,.25);color:#a64e63;font-size:10px;font-weight:600;
+}
+.kw-name{display:flex;align-items:center;gap:6px;min-width:0}
+.kw-name span:first-child{white-space:normal;line-height:1.25}
+.kw-gender{font-size:15px;flex:0 0 auto}
+.kw-gender.male{color:#408bd8}.kw-gender.female{color:#ea79a1}
+
+.kw-check{
+  width:27px;height:27px;margin:auto;border-radius:9px;border:1.5px solid rgba(117,96,101,.30);
+  display:grid;place-items:center;background:rgba(255,255,255,.72);cursor:pointer;
+  transition:.16s ease;box-shadow:0 4px 12px rgba(56,38,42,.06);user-select:none;
+}
+.kw-check svg{width:16px;height:16px;fill:none;stroke:white;stroke-width:2.6;opacity:0}
+.kw-check.on{background:#b93645;border-color:#b93645;box-shadow:0 5px 15px rgba(185,54,69,.22)}
+.kw-check.on svg{opacity:1}
+.kw-check:active{transform:scale(.94)}
+.kw-check.disabled{opacity:.35;pointer-events:none}
+
+.kw-time-btn,.kw-mini-choice,.kw-late-reason{
+  width:100%;min-height:38px;border:1px solid rgba(102,82,87,.14);border-radius:12px;
+  background:rgba(255,255,255,.72);padding:7px 9px;color:#262326;font:inherit;
+  box-shadow:0 5px 14px rgba(57,39,43,.05);box-sizing:border-box;
+}
+.kw-time-btn{display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer}
+.kw-time-btn:disabled,.kw-late-reason:disabled{opacity:.38;box-shadow:none}
+.kw-late-reason{outline:none}
+.kw-late-reason::placeholder{color:#aaa}
+.kw-absence{margin-top:5px}
+.kw-absence .choice-btn{min-height:30px!important;padding:5px 7px!important;font-size:11px!important}
+.kw-note{width:100%;min-height:38px;border:1px solid rgba(102,82,87,.14);border-radius:12px;
+  background:rgba(255,255,255,.70);padding:8px 10px;box-sizing:border-box;outline:none}
+
+#saveAttendanceBtn.kw-hidden-save{display:none!important}
+
+.kw-day-timeline{
+  height:min(58vh,560px);overflow-y:auto;padding-right:4px;margin-top:12px;
+  overscroll-behavior:contain;
+}
+.kw-hour-row{
+  display:grid;grid-template-columns:62px 1fr;gap:10px;min-height:52px;
+  border-top:1px solid rgba(83,63,68,.09);padding:8px 0;cursor:pointer;
+}
+.kw-hour-row:hover{background:rgba(185,54,69,.035)}
+.kw-hour-time{font-size:12px;color:#9b4b56;font-variant-numeric:tabular-nums}
+.kw-hour-content{min-width:0}
+.kw-default-block,.kw-agenda-block{
+  border-radius:10px;padding:7px 9px;margin-bottom:5px;font-size:12px;
+  background:rgba(255,255,255,.65);border:1px solid rgba(110,91,96,.10)
+}
+.kw-default-block{background:rgba(185,54,69,.06)}
+.kw-agenda-block{background:rgba(255,255,255,.78)}
+.kw-hour-empty{color:#aaa;font-size:11px;padding-top:4px}
+.kw-add-hour{font-size:11px;color:#a64c59;margin-left:5px}
+
+.mini-att{background:rgba(198,236,210,.58)!important;color:#3a7650!important}
+
+@media(max-width:700px) and (orientation:portrait){
+  #page-attendance .attendance-table{min-width:900px}
+  #page-attendance .table-wrap{margin-left:0;margin-right:0}
+}
+@media(max-height:520px) and (orientation:landscape){
+  #page-attendance .attendance-table{min-width:0!important;font-size:10px}
+  #page-attendance .attendance-table th{font-size:9px;padding:6px 3px}
+  #page-attendance .attendance-table td{font-size:10px;padding:5px 3px}
+  #page-attendance .attendance-table th:nth-child(1){width:4%}
+  #page-attendance .attendance-table th:nth-child(2){width:17%}
+  #page-attendance .attendance-table th:nth-child(3),
+  #page-attendance .attendance-table th:nth-child(4){width:6%}
+  #page-attendance .attendance-table th:nth-child(5){width:9%}
+  #page-attendance .attendance-table th:nth-child(6){width:14%}
+  #page-attendance .attendance-table th:nth-child(7){width:10%}
+  #page-attendance .attendance-table th:nth-child(8){width:13%}
+  #page-attendance .attendance-table th:nth-child(9){width:21%}
+  .kw-time-btn,.kw-mini-choice,.kw-late-reason,.kw-note{font-size:10px;min-height:31px;padding:5px}
+}
+</style>
+
 </head>
 <body>
 
@@ -1026,8 +1143,8 @@ main{
 
 <script>
 const APP_PASSWORD = "sensei";
-const STORE_KEY = "kitaworks_demo_v42";
-const SETTINGS_KEY = "kitaworks_settings_demo_v42";
+const STORE_KEY = "kitaworks_demo_v44";
+const SETTINGS_KEY = "kitaworks_settings_demo_v44";
 let db = loadDB();
 let settings = Object.assign({cutoff:"07:45", recovery:5}, JSON.parse(localStorage.getItem(SETTINGS_KEY)||"{}"));
 let calCursor = new Date();
@@ -2595,7 +2712,7 @@ function requestLogout(){
 }
 function openStartAttendance(){openDatePicker(isoDate(new Date()),date=>startAttendanceFor(date),"Pilih Tanggal","Input Daftar Hadir")}
 
-/* Fresh deterministic one-year simulation: 30 active, 8 Lulus SO, varied data, holidays/agendas/reports, SP1/SP2/SP3 on different students. */
+/* Fresh deterministic one-year simulation: 30 active, 100 Lulus SO, varied attendance, holidays, agendas, reports, and SP1/SP2/SP3. */
 function seedSimulationIfNeeded(){
   if(db.students?.length)return;
   const activeNames=[
@@ -2603,14 +2720,14 @@ function seedSimulationIfNeeded(){
     "Komang Yuni Lestari","Putu Eka Wijaya","Kadek Dwi Anggreni","Made Bintang Pramana","Ni Made Ratih","Wayan Yoga Pratama","Putu Ayu Maharani","Komang Bagus Setiawan","Kadek Intan Permata","Gede Surya Dharma",
     "Ni Luh Putu Widiari","Made Agus Santika","Komang Sri Wahyuni","Putu Bayu Pradana","Kadek Novi Ariani","Wayan Dika Saputra","Ni Made Citra Dewi","Gede Rama Putra","Komang Trisna Yanti","Putu Fajar Mahardika"
   ];
-  const gradNames=["Agus Setiawan","Rina Wulandari","Budi Santoso","Siti Aisyah","Deni Kurniawan","Dewi Anggraini","Fajar Nugraha","Nadia Putri"];
+  const gradNames=["Agus Setiawan","Agus Wulandari","Agus Santoso","Agus Pratama","Rina Setiawan","Rina Wulandari","Rina Santoso","Rina Pratama","Budi Setiawan","Budi Wulandari","Budi Santoso","Budi Pratama","Siti Setiawan","Siti Wulandari","Siti Santoso","Siti Pratama","Deni Setiawan","Deni Wulandari","Deni Santoso","Deni Pratama","Dewi Setiawan","Dewi Wulandari","Dewi Santoso","Dewi Pratama","Fajar Setiawan","Fajar Wulandari","Fajar Santoso","Fajar Pratama","Nadia Setiawan","Nadia Wulandari","Nadia Santoso","Nadia Pratama","Rizky Setiawan","Rizky Wulandari","Rizky Santoso","Rizky Pratama","Anisa Setiawan","Anisa Wulandari","Anisa Santoso","Anisa Pratama","Yusuf Setiawan","Yusuf Wulandari","Yusuf Santoso","Yusuf Pratama","Lina Setiawan","Lina Wulandari","Lina Santoso","Lina Pratama","Rendi Setiawan","Rendi Wulandari","Rendi Santoso","Rendi Pratama","Maya Setiawan","Maya Wulandari","Maya Santoso","Maya Pratama","Arif Setiawan","Arif Wulandari","Arif Santoso","Arif Pratama","Indah Setiawan","Indah Wulandari","Indah Santoso","Indah Pratama","Dimas Setiawan","Dimas Wulandari","Dimas Santoso","Dimas Pratama","Nita Setiawan","Nita Wulandari","Nita Santoso","Nita Pratama","Aldi Setiawan","Aldi Wulandari","Aldi Santoso","Aldi Pratama","Fitria Setiawan","Fitria Wulandari","Fitria Santoso","Fitria Pratama","Bagus Setiawan","Bagus Wulandari","Bagus Santoso","Bagus Pratama","Nabila Setiawan","Nabila Wulandari","Nabila Santoso","Nabila Pratama","Raka Setiawan","Raka Wulandari","Raka Santoso","Raka Pratama","Tika Setiawan","Tika Wulandari","Tika Santoso","Tika Pratama","Andi Setiawan","Andi Wulandari","Andi Santoso","Andi Pratama"];
   const soNames=["SO Sakura","SO Mirai","SO Hikari","SO Kizuna"],kaisha=["Yamato Foods","Sakura Seiki","Mirai Kensetsu","Hikari Service"],kumiai=["Kumiai Osaka","Kumiai Aichi","Kumiai Gifu","Kumiai Hyogo"],jobs=["Food Processing","Kensetsu","Kikai Kensa","Kaigo"];
   const now=new Date();now.setHours(12,0,0,0);const end=isoDate(now),st=new Date(now);st.setFullYear(st.getFullYear()-1);st.setDate(st.getDate()+1);const start=isoDate(st);
   const add=(ds,n)=>{const x=parseISO(ds);x.setDate(x.getDate()+n);return isoDate(x)};
   activeNames.forEach((name,i)=>db.students.push({id:`stu_a_${String(i+1).padStart(2,"0")}`,nis:`KTMR${String(i+1).padStart(3,"0")}`,name,gender:i%3===1?"Perempuan":"Laki-laki",start:add(start,-70-(i%95)),status:"Belajar",sp3Deactivations:[]}));
   gradNames.forEach((name,i)=>{
-    const soDate=add(start,48+i*34);
-    db.students.push({id:`stu_g_${String(i+1).padStart(2,"0")}`,nis:`KTMR${String(i+31).padStart(3,"0")}`,name,gender:i%2?"Perempuan":"Laki-laki",start:add(start,-170-i*11),status:"Lulus SO",soDate,soName:soNames[i%4],kaisha:kaisha[i%4],kumiai:kumiai[i%4],job:jobs[i%4],sp3Deactivations:[]});
+    const soDate=add(start,20+((i*3)%330));
+    db.students.push({id:`stu_g_${String(i+1).padStart(2,"0")}`,nis:`KTMR${String(i+31).padStart(3,"0")}`,name,gender:i%2?"Perempuan":"Laki-laki",start:add(start,-120-(i%140)),status:"Lulus SO",soDate,soName:soNames[i%4],kaisha:kaisha[i%4],kumiai:kumiai[i%4],job:jobs[i%4],sp3Deactivations:[]});
   });
   const holidays=[
     [35,"Hari Raya / Libur Bersama"],[82,"Libur LPK"],[133,"Kegiatan Internal LPK"],[176,"Hari Raya / Libur Bersama"],[219,"Libur LPK"],[287,"Kegiatan Internal LPK"]
@@ -2663,7 +2780,7 @@ function seedSimulationIfNeeded(){
     db.agendas.push({id:`ag_${m}_b`,date:base2,time:"15:30",title:["Briefing Kedisiplinan","Latihan JLPT","Kegiatan LPK"][m%3],note:"Agenda simulasi KitaWorks"});
     if(m%2===0)db.agendas.push({id:`ag_${m}_c`,date:base3,time:"12:30",title:"SO Datang",note:"Persiapan dan pendampingan siswa"});
   }
-  db.demoSeed={version:42,createdAt:new Date().toISOString(),description:"30 siswa aktif + 8 Lulus SO + simulasi 1 tahun penuh tanpa Horenso"};
+  db.demoSeed={version:44,createdAt:new Date().toISOString(),description:"30 siswa aktif + 100 siswa Lulus SO + simulasi Sensei 1 tahun + tabel absensi cepat"};
 }
 
 /* seed before app is shown; new storage key prevents overwriting prior KitaWorks data */
@@ -2672,5 +2789,304 @@ recalcSP();
 saveDB();
 
 </script>
+
+<script id="kw-v44-script">
+(function(){
+  const checkSvg='<svg viewBox="0 0 24 24"><path d="m5 12 4 4 10-10"/></svg>';
+
+  /* Modal lock: content behind every popup cannot be clicked or scrolled. */
+  window.showModal=function(content,extraClass=""){
+    document.body.classList.add("kw-modal-open");
+    document.getElementById("modalRoot").innerHTML=
+      `<div class="modal-backdrop"><div class="modal ${extraClass}">${content}</div></div>`;
+  };
+  window.closeModal=function(){
+    const root=document.getElementById("modalRoot");
+    if(root)root.innerHTML="";
+    document.body.classList.remove("kw-modal-open");
+  };
+
+  function setTableHead(){
+    const h=document.querySelector("#page-attendance .attendance-table thead tr");
+    if(h)h.innerHTML="<th>No</th><th>Nama Siswa</th><th>Hadir</th><th>Telat</th><th>Jam</th><th>Alasan Telat</th><th>Lapor Sensei</th><th>Perilaku</th><th>Catatan</th>";
+    const quick=document.querySelector('#page-attendance .toolbar .btn-secondary');
+    if(quick){quick.textContent="✓ Centang Semua Hadir";quick.setAttribute("onclick","setAllPresent()")}
+  }
+
+  function choiceButton(value,kind,disabled=false){
+    const label=value||"-";
+    return `<button type="button" class="choice-btn kw-mini-choice kw-${kind}" data-value="${esc(value||"")}" ${disabled?"disabled":""}
+      onclick="openV44Choice(this,'${kind}')"><span>${esc(label)}</span><svg viewBox="0 0 24 24"><path d="m7 9 5 5 5-5"/></svg></button>`;
+  }
+  function tick(on,kind){
+    return `<button type="button" class="kw-check ${on?"on":""}" data-kind="${kind}" onclick="toggleV44Check(this)">${checkSvg}</button>`;
+  }
+
+  window.loadAttendanceForm=function(){
+    setTableHead();
+    const date=document.getElementById("attendanceDate")?.value;if(!date)return;
+    const hol=db.holidays[date], normal=document.getElementById("attendanceNormal"), hm=document.getElementById("attendanceHolidayMode");
+    if(hol){
+      normal.classList.add("hidden");hm.classList.remove("hidden");
+      hm.innerHTML=`<div class="holiday-lock-card"><h3>Hari Libur</h3><p>${esc(hol)}</p>
+      <button class="btn holiday-work-btn" onclick="markWorkingDay()">Tandai Hari Kerja</button></div>`;
+      updateSaveButton();return;
+    }
+    normal.classList.remove("hidden");hm.classList.add("hidden");hm.innerHTML="";
+    const day=db.attendance[date]||{records:{}};
+    const active=db.students.filter(s=>s.status==="Belajar").sort((a,b)=>a.name.localeCompare(b.name));
+    const body=document.getElementById("attendanceBody");
+    body.innerHTML=active.map((s,i)=>{
+      const r=day.records?.[s.id]||{};
+      const present=r.status==="Hadir"||r.status==="Telat";
+      const late=r.status==="Telat";
+      const absence=present?"":(r.status||"");
+      const gender=s.gender==="Perempuan";
+      return `<tr data-sid="${s.id}">
+        <td><div class="kw-num">${i+1}</div></td>
+        <td><div class="kw-name"><span>${esc(s.name)}</span><span class="kw-gender ${gender?"female":"male"}">${gender?"♀":"♂"}</span></div></td>
+        <td>${tick(present,"present")}
+          <div class="kw-absence ${present?"hidden":""}">${choiceButton(absence,"absence")}</div>
+        </td>
+        <td>${tick(late,"late")}</td>
+        <td><button type="button" class="kw-time-btn" ${late?"":"disabled"} onclick="openTimePicker(this)">
+          <span class="time-value">${late?(r.time||"07:46"):"07:45"}</span> <span style="opacity:.55">◷</span></button></td>
+        <td><input class="kw-late-reason" ${late?"":"disabled"} value="${esc(r.lateReason||"")}" placeholder="${late?"Wajib diisi":"—"}" oninput="markDirty()"></td>
+        <td>${tick(late&&r.reportedToSensei===true,"reported")}</td>
+        <td>${choiceButton(r.behavior||"Baik","behavior")}</td>
+        <td><input class="kw-note" value="${esc(r.note||"")}" placeholder="Opsional" oninput="markDirty()"></td>
+      </tr>`;
+    }).join("")||`<tr><td colspan="9"><div class="empty">Belum ada siswa aktif.</div></td></tr>`;
+    dirty=false;updateSaveButton();
+  };
+
+  window.toggleV44Check=function(btn){
+    const tr=btn.closest("tr"),kind=btn.dataset.kind;
+    if(kind==="present"){
+      const on=!btn.classList.contains("on");
+      btn.classList.toggle("on",on);
+      const absent=tr.querySelector(".kw-absence");
+      absent?.classList.toggle("hidden",on);
+      if(!on){
+        const late=tr.querySelector('[data-kind="late"]');
+        if(late)late.classList.remove("on");
+        syncLateRow(tr,false);
+      }else{
+        const ab=tr.querySelector(".kw-absence .choice-btn");if(ab){ab.dataset.value="";ab.querySelector("span").textContent="-";}
+        const beh=tr.querySelector(".kw-behavior");if(beh&&!beh.dataset.value)setChoiceButton(beh,"Baik");
+      }
+    }else if(kind==="late"){
+      const present=tr.querySelector('[data-kind="present"]');
+      if(!present.classList.contains("on"))present.classList.add("on");
+      tr.querySelector(".kw-absence")?.classList.add("hidden");
+      const on=!btn.classList.contains("on");btn.classList.toggle("on",on);syncLateRow(tr,on);
+    }else if(kind==="reported"){
+      const late=tr.querySelector('[data-kind="late"]')?.classList.contains("on");
+      if(!late)return;
+      btn.classList.toggle("on");
+    }
+    markDirty();
+  };
+
+  function syncLateRow(tr,late){
+    const time=tr.querySelector(".kw-time-btn"),reason=tr.querySelector(".kw-late-reason"),reported=tr.querySelector('[data-kind="reported"]');
+    if(time){time.disabled=!late;if(!late)time.querySelector(".time-value").textContent="07:45";}
+    if(reason){reason.disabled=!late;if(!late){reason.value="";reason.placeholder="—"}else reason.placeholder="Wajib diisi";}
+    if(reported){reported.classList.toggle("disabled",!late);if(!late)reported.classList.remove("on")}
+  }
+
+  window.setAllPresent=function(){
+    document.querySelectorAll("#attendanceBody tr[data-sid]").forEach(tr=>{
+      tr.querySelector('[data-kind="present"]')?.classList.add("on");
+      tr.querySelector('[data-kind="late"]')?.classList.remove("on");
+      tr.querySelector(".kw-absence")?.classList.add("hidden");
+      syncLateRow(tr,false);
+      const b=tr.querySelector(".kw-behavior");if(b)setChoiceButton(b,"Baik");
+    });
+    markDirty();
+  };
+
+  window.openV44Choice=function(btn,kind){
+    const map={
+      absence:["Izin","Sakit","Tanpa Keterangan"],
+      behavior:["Baik","Cukup","Perlu Pembinaan"]
+    };
+    const title=kind==="absence"?"Status Tidak Hadir":"Perilaku";
+    const current=btn.dataset.value||"";
+    window.__v44ChoiceTarget=btn;window.__v44ChoiceKind=kind;
+    showModal(`<div class="muted" style="font-size:12px">Pilih</div><h3>${title}</h3>
+      <div class="choice-sheet">${map[kind].map(v=>`<button class="choice-option ${v===current?"selected":""}" onclick="chooseV44('${v.replace(/'/g,"\\'")}')"><span>${v}</span><span class="choice-radio"></span></button>`).join("")}</div>
+      <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Batal</button></div>`);
+  };
+  window.chooseV44=function(v){
+    const b=window.__v44ChoiceTarget;if(b)setChoiceButton(b,v);closeModal();markDirty();
+  };
+
+  /* Time picker used by late rows: changing time never changes presence status. */
+  const oldConfirmWheelTime=window.confirmWheelTime;
+  window.confirmWheelTime=function(){
+    const w=window.__wheelTime,btn=window.__timeTarget;if(!w||!btn)return;
+    let h=Number(w.hour);if(w.ampm==="PM"&&h!==12)h+=12;if(w.ampm==="AM"&&h===12)h=0;
+    const value=`${String(h).padStart(2,"0")}:${w.minute}`;
+    btn.querySelector(".time-value").textContent=value;
+    closeModal();markDirty();
+  };
+
+  window.collectAttendance=function(){
+    const records={};
+    document.querySelectorAll("#attendanceBody tr[data-sid]").forEach(tr=>{
+      const sid=tr.dataset.sid;
+      const present=tr.querySelector('[data-kind="present"]')?.classList.contains("on");
+      const late=tr.querySelector('[data-kind="late"]')?.classList.contains("on");
+      let status="";
+      if(present)status=late?"Telat":"Hadir";
+      else status=tr.querySelector(".kw-absence .choice-btn")?.dataset.value||"Tanpa Keterangan";
+      const time=present?(late?(tr.querySelector(".time-value")?.textContent||""):"07:45"):"";
+      records[sid]={
+        time,status,
+        lateReason:late?(tr.querySelector(".kw-late-reason")?.value.trim()||""):"",
+        reportedToSensei:late?!!tr.querySelector('[data-kind="reported"]')?.classList.contains("on"):false,
+        behavior:tr.querySelector(".kw-behavior")?.dataset.value||"Baik",
+        note:tr.querySelector(".kw-note")?.value.trim()||""
+      };
+    });return records;
+  };
+
+  window.saveAttendance=function(){
+    const date=document.getElementById("attendanceDate")?.value;if(!date||db.holidays[date])return;
+    const records=collectAttendance();
+    const missing=Object.entries(records).filter(([_,r])=>r.status==="Telat"&&(!r.time||!r.lateReason)).map(([sid])=>studentName(sid));
+    if(missing.length)return alert("Lengkapi jam dan alasan telat untuk: "+missing.join(", "));
+    db.attendance[date]={savedAt:new Date().toISOString(),records};
+    recalcSP();dirty=false;localStorage.setItem(STORE_KEY,JSON.stringify(db));
+    updateSaveButton();renderHome();renderCalendar();renderSP();renderReports();
+  };
+
+  window.updateSaveButton=function(){
+    const btn=document.getElementById("saveAttendanceBtn");if(!btn)return;
+    btn.disabled=false;btn.textContent="Simpan Absensi";
+    btn.classList.toggle("kw-hidden-save",!dirty);
+  };
+
+  /* SP: SP1 only after five late arrivals. */
+  window.recalcSP=function(){
+    db.students.forEach(s=>{s.spLevel=0;s.spProgress=0;s.spHistory=[];s._preSpLate=0});
+    const dates=Object.keys(db.attendance).sort();
+    for(const date of dates){
+      const day=db.attendance[date];
+      for(const s of db.students){
+        const r=day.records?.[s.id];if(!r)continue;
+        if(r.status==="Telat"){
+          if(s.spLevel===0){
+            s._preSpLate=(s._preSpLate||0)+1;
+            if(s._preSpLate>=5){s.spLevel=1;s.spProgress=0;s.spHistory.push({date,text:"SP1・5 kali telat・Teguran lisan + push-up 50 kali"})}
+          }else if(s.spLevel===1){
+            s.spLevel=2;s.spProgress=0;s.spHistory.push({date,text:"Naik SP2・Telat sebelum pemulihan selesai・Teguran lisan + tugas tambahan + push-up"});
+          }else if(s.spLevel===2){
+            s.spLevel=3;s.spProgress=0;s.spHistory.push({date,text:"Naik SP3・Perlu penanganan atasan"});
+          }
+        }else if(r.status==="Hadir"&&s.spLevel>0&&s.spLevel<3){
+          s.spProgress=(s.spProgress||0)+1;
+          if(s.spProgress>=settings.recovery){
+            if(s.spLevel===2){s.spLevel=1;s.spProgress=0;s.spHistory.push({date,text:"SP2 turun ke SP1 setelah 5 kali tepat waktu"})}
+            else{s.spLevel=0;s.spProgress=0;s._preSpLate=0;s.spHistory.push({date,text:"SP1 selesai setelah 5 kali tepat waktu"})}
+          }
+        }
+      }
+    }
+    db.students.forEach(s=>delete s._preSpLate);
+  };
+
+  /* Calendar label and complete 24-hour daily timeline. */
+  const oldRenderCalendar=window.renderCalendar;
+  window.renderCalendar=function(){
+    oldRenderCalendar();
+    document.querySelectorAll(".mini-att").forEach(x=>x.textContent="Daftar Hadir");
+  };
+  window.calendarDayClick=function(date){
+    const hol=db.holidays[date];
+    const d=parseISO(date),weekday=d.getDay();
+    const workday=weekday>=1&&weekday<=5&&!hol;
+    const agendas=db.agendas.filter(a=>a.date===date).sort((a,b)=>(a.time||"").localeCompare(b.time||""));
+    let rows="";
+    for(let h=0;h<24;h++){
+      const hh=String(h).padStart(2,"0")+":00";
+      const ag=agendas.filter(a=>Number((a.time||"-1").slice(0,2))===h);
+      let blocks="";
+      if(workday&&h===8)blocks+=`<div class="kw-default-block"><strong>08:00–10:00 · Belajar</strong><div class="muted">Jadwal belajar default</div></div>`;
+      if(workday&&h===10){
+        blocks+=`<div class="kw-default-block"><strong>10:00–10:15 · Istirahat</strong><div class="muted">Istirahat 15 menit</div></div>`;
+        blocks+=`<div class="kw-default-block"><strong>10:15–12:00 · Belajar</strong><div class="muted">Jadwal belajar default</div></div>`;
+      }
+      if(hol&&h===8)blocks+=`<div class="kw-default-block"><strong>Hari Libur</strong><div class="muted">${esc(hol)}</div></div>`;
+      blocks+=ag.map(a=>`<div class="kw-agenda-block"><strong>${esc(a.time||hh)} · ${esc(a.title)}</strong>${a.note?`<div class="muted">${esc(a.note)}</div>`:""}</div>`).join("");
+      rows+=`<div class="kw-hour-row" onclick="closeModal();openAgendaModal('${date}','${hh}')">
+        <div class="kw-hour-time">${hh}</div><div class="kw-hour-content">${blocks||`<div class="kw-hour-empty">Kosong <span class="kw-add-hour">+ Tambah agenda</span></div>`}</div></div>`;
+    }
+    showModal(`<h3>${fmtDate(date)}</h3>
+      <div class="modal-actions" style="justify-content:flex-start">
+        <button class="btn btn-primary" onclick="closeModal();openAgendaModal('${date}')">+ Tambah Agenda</button>
+        ${workday?`<button class="btn btn-outline" onclick="closeModal();startAttendanceFor('${date}')">Input Daftar Hadir</button>`:""}
+      </div><div class="kw-day-timeline">${rows}</div>`);
+  };
+
+  const oldOpenAgendaModal=window.openAgendaModal;
+  window.openAgendaModal=function(date=isoDate(new Date()),prefillTime=""){
+    oldOpenAgendaModal(date);
+    const t=document.getElementById("agTime");if(t&&prefillTime)t.value=prefillTime;
+  };
+
+  /* Daily report: show only students who need behavioral attention. */
+  window.buildReportText=function(date,condition,suggestion){
+    const x=reportGroups(date);
+    const bad=x.pp?.length?`\n\n*Perlu Pembinaan*\n${reportLine("Perlu Pembinaan",x.pp)}`:"";
+    return `*LAPORAN KBM*
+*LPK KITAMURA MIRAI INDONESIA*
+${fmtDate(date)}
+
+*Kehadiran*
+${reportLine("Hadir",x.hadir)}
+${reportLine("Telat",x.telat)}
+${reportLine("Izin",x.izin)}
+${reportLine("Sakit",x.sakit)}
+${reportLine("Tanpa Keterangan",x.tk)}${bad}
+
+*Kondisi KBM*
+${condition||"-"}
+
+*Saran*
+${suggestion||"-"}`;
+  };
+
+  /* Generic "save only when changed" behavior for forms/settings. */
+  function installDirtyAction(scope=document){
+    const selectors=['button.btn-primary'];
+    scope.querySelectorAll(selectors.join(",")).forEach(btn=>{
+      const txt=(btn.textContent||"").trim();
+      if(!/^(Simpan|Buat Laporan)/i.test(txt)||btn.id==="saveAttendanceBtn")return;
+      const container=btn.closest(".modal,.card")||scope;
+      const fields=[...container.querySelectorAll("input,textarea,select")];
+      if(!fields.length)return;
+      btn.style.display="none";
+      fields.forEach(f=>{
+        const show=()=>btn.style.display="";
+        f.addEventListener("input",show,{once:false});
+        f.addEventListener("change",show,{once:false});
+      });
+    });
+  }
+  const obs=new MutationObserver(()=>installDirtyAction(document));
+  obs.observe(document.getElementById("modalRoot"),{childList:true,subtree:true});
+  document.addEventListener("DOMContentLoaded",()=>{
+    setTableHead();installDirtyAction(document);
+    const settingsCard=document.querySelector("#page-settings .card");
+    if(settingsCard){
+      const sb=[...settingsCard.querySelectorAll(".btn-primary")].find(b=>/Simpan Pengaturan/i.test(b.textContent));
+      if(sb){sb.style.display="none";settingsCard.querySelectorAll("input").forEach(f=>["input","change"].forEach(ev=>f.addEventListener(ev,()=>sb.style.display="")))}
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
